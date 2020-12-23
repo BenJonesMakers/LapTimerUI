@@ -26,8 +26,8 @@ export default class AvailablePorts extends React.Component {
               }
             
             response.json().then(function(data) {
-                console.log(data);
-                self.setState({comPorts: data.comPorts[0]});
+                console.log(data.comPorts);
+                self.setState({comPorts: data.comPorts});
                 
             })
             
@@ -45,7 +45,10 @@ export default class AvailablePorts extends React.Component {
     
     render () {
         return (
-            <div><p>Com Ports: </p>{this.state.comPorts || <p>No com ports found</p>} <button onClick={this.getRequestData}>Refresh</button></div>
+            <div>
+                <p>Transponder found on </p>{this.state.comPorts || <p>No com ports found</p>} 
+            <button onClick={this.getRequestData}>Refresh</button>
+            </div>
         );
     }
 }
