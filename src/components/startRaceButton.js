@@ -1,10 +1,10 @@
 import React from 'react';
 
-function StartListeningButton(props) {
+function StartRaceButton(props) {
 
     function handleOnClick () {
-        fetch('http://localhost:3000/races/startlistening/' + props.comPort, {
-            method: 'put'
+        fetch('http://localhost:3000/liveRace/startrace/', {
+            method: 'post'
         } )
         .then(function(response) {
             if (response.status !== 200) {
@@ -15,6 +15,7 @@ function StartListeningButton(props) {
             
             response.json().then(function(data) {
                 console.log(data);
+                props.raceInProgress();
             })
             
         })
@@ -25,8 +26,8 @@ function StartListeningButton(props) {
     
 
     return (
-        <div><button onClick={handleOnClick}>Start Listening</button></div>
+        <div><button onClick={handleOnClick}>Start Race</button></div>
     )
 }
 
-export default StartListeningButton;
+export default StartRaceButton;
