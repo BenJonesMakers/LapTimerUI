@@ -7,12 +7,18 @@ class RaceDetailsPanel extends React.Component {
         }
     }
 
+    // splitArray() {
+    //     this.props.laps.forEach(element => {
+    //         element.transponder
+    //     });
+    // }
+
     render () {
         console.log('detailslaps', this.props.laps);
         return (
-            <div>Laps Data:
-                {this.props.laps.map((lap, index) => (
-        <p>Lap {index}: {lap} </p>
+            <div>Transponder Numbers:
+                {this.props.uniqueTransponders.map((transponder, index) => (
+        <p> {transponder} </p>
     ))}{}</div>
         )
     }
