@@ -1,27 +1,43 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import RaceEntryDetails from './raceEntryDetails'
 
-class RaceDetailsPanel extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-        }
-    }
+const RaceDetailsPanel = ({laps, uniqueTransponders}) => {
+
+    useEffect(() => {
+        console.log('laps in race dets panel', laps);
+        console.log('num of transponders', uniqueTransponders);
+    }, [uniqueTransponders, laps]);
 
     // splitArray() {
-    //     this.props.laps.forEach(element => {
-    //         element.transponder
+    //     let resultsArray = [];
+    //     this.props.uniqueTransponders.forEach(uniqueTransponder => {
+    //        //things here are per transponder
+    //         const perRacerDetails = {
+    //            totalLapTime: null
+    //        }
+            
+    //         this.props.laps.forEach(lap => {
+    //             if (lap.transponderId === uniqueTransponder) {
+    //                 perRacerDetails.totalTime = perRacerDetails.totalTime + lap.laptime
+    //             }
+    //         });
+
+    //          resultsArray.push(perRacerDetails);
     //     });
+    //     return resultsArray;
     // }
 
-    render () {
-        console.log('detailslaps', this.props.laps);
-        return (
-            <div>Transponder Numbers:
-                {this.props.uniqueTransponders.map((transponder, index) => (
-        <p> {transponder} </p>
-    ))}{}</div>
+        
+        return ( 
+            <>
+                 {uniqueTransponders.length > 0 ? 
+                 uniqueTransponders.map((transponder, index) => (
+                   <RaceEntryDetails transponderId={transponder} />
+                )) : <p>empty</p>
+                }
+            </>
         )
-    }
+
 }
 
 export default RaceDetailsPanel;

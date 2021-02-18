@@ -53,7 +53,7 @@ class RaceScreen extends React.Component {
                 response.json().then(function(data) {
                         self.setState({laps: data.laps});
                         self.setState({uniqueTransponders: data.uniqueTransponders});
-                        console.log(data.laps);
+                        console.log('lap data:', data.laps);
                 })
                 
             })
