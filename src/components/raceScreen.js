@@ -11,10 +11,12 @@ class RaceScreen extends React.Component {
         this.state = {
             uniqueTransponders: [],
             laps: [],
-            raceInProgress: false
+            raceInProgress: false,
+            lapNumber: 0
         }
 
         this.getRaceData = this.getRaceData.bind(this);
+        this.getFakeRaceData = this.getFakeRaceData.bind(this);
         this.handleOnClick = this.handleOnClick.bind(this);
         this.setRaceInProgress = this.setRaceInProgress.bind(this);
     }
@@ -63,6 +65,39 @@ class RaceScreen extends React.Component {
         }
     }
 
+    async getFakeRaceData () {
+        let self = this;
+        
+
+        if (this.state.raceInProgress) {
+            console.log('I\'m sending fake race data');
+
+            var laps = self.state.laps || [];
+            var lapNumber = self.state.lapNumber;
+            const uniqueTransponders = ["1006319", "1003456", "1003666"];
+            self.setState({uniqueTransponders: uniqueTransponders});
+            // var randLapTime = Math.random() * 100;
+
+            //add a new lap
+            uniqueTransponders.forEach(transponder => {
+                
+                let fakeLap = {
+                    transponderId: transponder,
+                    lapNo: lapNumber,
+                    laptime: Math.random() * 100
+                }
+        
+                laps.push(fakeLap);
+            } );
+            
+            self.setState({laps: laps});
+            self.setState({lapNumber: lapNumber += 1});
+    
+            // console.log('fake lap data:', laps);
+            
+        }
+    }
+
     componentDidMount() {
         
         const setIntervalAsync = (fn, ms) => {
@@ -72,7 +107,8 @@ class RaceScreen extends React.Component {
           };
 
         try {
-            setIntervalAsync(this.getRaceData, 5000);
+            // setIntervalAsync(this.getRaceData, 5000);
+            setIntervalAsync(this.getFakeRaceData, 5000);
         } catch(e) {
             console.log(e);
         }

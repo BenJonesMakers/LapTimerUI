@@ -1,16 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-const RaceEntryDetails = ({transponderId}) => {
+const RaceEntryDetails = ({transponderId, laps}) => {
+
+    let currentLap = useRef(0);
+    let lastLapTime = useRef(0.000);
 
     useEffect(() => {
-    console.log('transponderId', transponderId);
+
+        if (laps.length) {
+            var thisTranspondersLaps = laps.filter(lap => lap.transponderId === transponderId);
+            currentLap.current = thisTranspondersLaps[thisTranspondersLaps.length - 1].lapNo;
+            lastLapTime.current = thisTranspondersLaps[thisTranspondersLaps.length - 1].laptime;
+        }
     });
 
   
     return (
         <>
         {transponderId && <div key={transponderId}>
-            Transponder No: {transponderId}
+            Car No: {transponderId} - Lap No: {currentLap.current} - Last Lap: {lastLapTime.current.toFixed(3)}
         </div>}
         </>
     ) 
