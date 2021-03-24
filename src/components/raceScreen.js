@@ -12,7 +12,7 @@ class RaceScreen extends React.Component {
             uniqueTransponders: [],
             laps: [],
             raceInProgress: false,
-            lapNumber: 0
+            lapNumber: 1
         }
 
         this.getRaceData = this.getRaceData.bind(this);

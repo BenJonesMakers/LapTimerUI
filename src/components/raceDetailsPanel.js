@@ -1,36 +1,60 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import RaceEntryDetails from './raceEntryDetails'
 
 const RaceDetailsPanel = ({ laps, uniqueTransponders }) => {
 
-    //added logic here to pass filtered lap data down as props rather than the entire laps array
-    const filteredLaps = (transponder) => {
-        if (laps.length) {
-            var thisTranspondersLaps = laps.filter(lap => lap.transponderId === transponder);
-        }
-        return thisTranspondersLaps;
-    }
+    const filteredAndSortedLaps = useRef([]);
+    // object in array is:
+    // {
+    //   transponderId: 'string',
+    //   filteredLaps: [],
+    //   totalLapTime: float
+    // }
 
-    const totalLapTime = (transponder) => {
-        if (laps.length) {
-            var thisTranspondersLaps = laps.filter(lap => lap.transponderId === transponder);
-            var totalLapTimeByTransponder = thisTranspondersLaps.reduce(function (prev, current) {
+
+    useEffect(() => {
+
+        filteredAndSortedLaps.current = [];
+
+        const filteredLaps = (transponder) => {
+            return laps.filter(lap => lap.transponderId === transponder);
+        }
+
+        const totalLapTime = (transponder) => {
+            var totalLapTimeByTransponder = filteredLaps(transponder).reduce(function (prev, current) {
                 return prev + +current.laptime
             }, 0);
-        }
-        return totalLapTimeByTransponder.toFixed(3);
 
-    }
+            return totalLapTimeByTransponder.toFixed(3);
+        }
+
+        if (laps.length) {
+            uniqueTransponders.forEach(transponderId => {
+                filteredAndSortedLaps.current.push(
+                    {
+                        transponderId: transponderId,
+                        filteredLaps: filteredLaps(transponderId),
+                        totalLapTime: totalLapTime(transponderId)
+                    }
+                );
+
+            });
+
+            filteredAndSortedLaps.current = filteredAndSortedLaps.current.sort((a, b) => a.totalLapTime - b.totalLapTime);
+        }
+
+    }, [laps, uniqueTransponders]);
 
     return (
         <>
-            {uniqueTransponders.length > 0 ?
-                uniqueTransponders.map((transponder) => (
+            {filteredAndSortedLaps.current.length > 0 ?
+                filteredAndSortedLaps.current.map((transponder, index) => (
                     <RaceEntryDetails
-                        key={transponder}
-                        transponderId={transponder}
-                        filteredLaps={filteredLaps(transponder)}
-                        totalLapTime={totalLapTime(transponder)}
+                        key={transponder.transponderId}
+                        transponderId={transponder.transponderId}
+                        filteredLaps={transponder.filteredLaps}
+                        totalLapTime={transponder.totalLapTime}
+                        position={index}
                     />
                 )) : <p>empty</p>
             }
