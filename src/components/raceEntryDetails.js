@@ -1,22 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-const RaceEntryDetails = ({ transponderId, filteredLaps }) => {
+const RaceEntryDetails = ({ transponderId, filteredLaps, totalLapTime }) => {
 
     let currentLap = useRef(0);
     let lastLapTime = useRef(0.000);
-
-    const [totalLapTime, setTotalLapTime] = useState(0);
 
     useEffect(() => {
         if (filteredLaps) {
             currentLap.current = filteredLaps[filteredLaps.length - 1].lapNo;
             lastLapTime.current = filteredLaps[filteredLaps.length - 1].laptime;
-
-            let allLaps = filteredLaps.reduce(function (prev, current) {
-                return prev + +current.laptime
-            }, 0);
-
-            setTotalLapTime(allLaps.toFixed(3));
         }
     }, [filteredLaps]);
 

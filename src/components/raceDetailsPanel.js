@@ -11,6 +11,17 @@ const RaceDetailsPanel = ({ laps, uniqueTransponders }) => {
         return thisTranspondersLaps;
     }
 
+    const totalLapTime = (transponder) => {
+        if (laps.length) {
+            var thisTranspondersLaps = laps.filter(lap => lap.transponderId === transponder);
+            var totalLapTimeByTransponder = thisTranspondersLaps.reduce(function (prev, current) {
+                return prev + +current.laptime
+            }, 0);
+        }
+        return totalLapTimeByTransponder.toFixed(3);
+
+    }
+
     return (
         <>
             {uniqueTransponders.length > 0 ?
@@ -19,6 +30,7 @@ const RaceDetailsPanel = ({ laps, uniqueTransponders }) => {
                         key={transponder}
                         transponderId={transponder}
                         filteredLaps={filteredLaps(transponder)}
+                        totalLapTime={totalLapTime(transponder)}
                     />
                 )) : <p>empty</p>
             }
