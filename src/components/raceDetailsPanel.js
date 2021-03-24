@@ -14,6 +14,7 @@ const RaceDetailsPanel = ({ laps, uniqueTransponders }) => {
 
     useEffect(() => {
 
+        let oldFSL = filteredAndSortedLaps.current || [];
         filteredAndSortedLaps.current = [];
 
         const filteredLaps = (transponder) => {
@@ -41,6 +42,15 @@ const RaceDetailsPanel = ({ laps, uniqueTransponders }) => {
             });
 
             filteredAndSortedLaps.current = filteredAndSortedLaps.current.sort((a, b) => a.totalLapTime - b.totalLapTime);
+
+            // check if position has changed
+            if (oldFSL.length) {
+                var oldLeader = oldFSL[0].transponderId;
+                var newLeader = filteredAndSortedLaps.current[0].transponderId;
+                if (oldLeader !== newLeader) {
+                    console.log("We have a new race leader:  ", newLeader);
+                }
+            }
         }
 
     }, [laps, uniqueTransponders]);
