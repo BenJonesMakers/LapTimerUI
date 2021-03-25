@@ -5,6 +5,11 @@ const RaceEntryDetails = ({ transponderId, filteredLaps = [], totalLapTime, posi
     let currentLap = useRef(0);
     let lastLapTime = useRef(0.000);
     let formattedTotalLapTime = useRef(0.000);
+    let randomColor = useRef('000000');
+
+    useEffect(() => {
+        randomColor.current = Math.floor(Math.random() * 16777215).toString(16);
+    }, []);
 
     useEffect(() => {
         if (filteredLaps.length > 0) {
@@ -25,11 +30,12 @@ const RaceEntryDetails = ({ transponderId, filteredLaps = [], totalLapTime, posi
     return (
         <>
             {transponderId && <div key={transponderId}>
-                Position: {position + 1} -
-                Car No: {transponderId}
-                - Lap No: {currentLap.current}
-                - Last Lap: {lastLapTime.current.toFixed(3)}
-                - Total Laptime: {formattedTotalLapTime.current}
+                <h3 style={{ color: '#' + randomColor.current }}>Position {position + 1} -
+                Car: {transponderId} -
+                Lap: {currentLap.current} -
+                Last: {lastLapTime.current.toFixed(3)} -
+                Total Time: {formattedTotalLapTime.current}
+                </h3>
             </div>}
         </>
     )

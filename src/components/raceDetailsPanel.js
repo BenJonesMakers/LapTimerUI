@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import NewRaceLeader from './NewRaceLeader';
 import RaceEntryDetails from './raceEntryDetails'
 
 const RaceDetailsPanel = ({ laps, uniqueTransponders }) => {
@@ -10,6 +11,7 @@ const RaceDetailsPanel = ({ laps, uniqueTransponders }) => {
     //   filteredLaps: [],
     //   totalLapTime: float
     // }
+    const [raceLeaderChanged, setRaceLeaderChanged] = useState(false);
 
 
     useEffect(() => {
@@ -44,11 +46,13 @@ const RaceDetailsPanel = ({ laps, uniqueTransponders }) => {
             filteredAndSortedLaps.current = filteredAndSortedLaps.current.sort((a, b) => a.totalLapTime - b.totalLapTime);
 
             // check if position has changed
+            setRaceLeaderChanged(false);
+
             if (oldFSL.length) {
                 var oldLeader = oldFSL[0].transponderId;
                 var newLeader = filteredAndSortedLaps.current[0].transponderId;
                 if (oldLeader !== newLeader) {
-                    console.log("We have a new race leader:  ", newLeader);
+                    setRaceLeaderChanged(true);
                 }
             }
         }
@@ -57,6 +61,7 @@ const RaceDetailsPanel = ({ laps, uniqueTransponders }) => {
 
     return (
         <>
+            {raceLeaderChanged && <NewRaceLeader />}
             {filteredAndSortedLaps.current.length > 0 ?
                 filteredAndSortedLaps.current.map((transponder, index) => (
                     <RaceEntryDetails
