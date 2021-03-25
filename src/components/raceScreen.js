@@ -1,5 +1,6 @@
 import React from 'react';
 import RaceDetailsPanel from './raceDetailsPanel';
+import RaceTimer from './RaceTimer';
 import StartRaceButton from './startRaceButton';
 import StopListeningButton from './stopListeningButton';
 
@@ -11,29 +12,27 @@ class RaceScreen extends React.Component {
         this.state = {
             uniqueTransponders: [],
             laps: [],
-            raceInProgress: false,
+            raceStatus: 'notstarted',
             lapNumber: 1
         }
 
         this.getRaceData = this.getRaceData.bind(this);
         this.getFakeRaceData = this.getFakeRaceData.bind(this);
         this.handleOnClick = this.handleOnClick.bind(this);
-        this.setRaceInProgress = this.setRaceInProgress.bind(this);
+        this.setRaceStatus = this.setRaceStatus.bind(this);
     }
 
-    setRaceInProgress() {
-        this.setState({ raceInProgress: true });
-        console.log('race state changed');
-        console.log('value', this.state.raceInProgress);
+    setRaceStatus() {
+        this.setState({ raceStatus: 'running' });
+        console.log('raceStatus', this.state.raceStatus);
     }
 
     handleOnClick(e) {
         e.preventDefault();
-        console.log('clicked');
-        if (this.state.raceInProgress) {
-            this.setState({ raceInProgress: false });
+        if (this.state.raceStatus === 'notstarted') {
+            this.setState({ raceStatus: 'running' });
         } else {
-            this.setState({ raceInProgress: true });
+            this.setState({ raceStatus: 'notstarted' });
         }
     }
 
@@ -44,7 +43,7 @@ class RaceScreen extends React.Component {
     async getRaceData() {
         let self = this;
 
-        if (this.state.raceInProgress) {
+        if (this.state.raceStatus === 'running') {
             console.log('I ran');
             await fetch('http://localhost:3000/liverace/', {
                 method: 'get'
@@ -73,7 +72,7 @@ class RaceScreen extends React.Component {
         let self = this;
 
 
-        if (this.state.raceInProgress) {
+        if (this.state.raceStatus === 'running') {
             console.log('I\'m sending fake race data');
 
             var laps = self.state.laps || [];
@@ -120,6 +119,7 @@ class RaceScreen extends React.Component {
     render() {
         return (
             <div>
+                <RaceTimer initialMinute={'10'} raceStatus={this.state.raceStatus} />
                 <RaceDetailsPanel laps={this.state.laps} uniqueTransponders={this.state.uniqueTransponders} />
                 <StartRaceButton raceInProgress={this.setRaceInProgress} />
                 <StopListeningButton />
