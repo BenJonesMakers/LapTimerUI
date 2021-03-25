@@ -15,7 +15,7 @@ const RaceDetailsPanel = ({ laps, uniqueTransponders }) => {
 
 
     useEffect(() => {
-
+        console.log('Panel', laps);
         let oldFSL = filteredAndSortedLaps.current || [];
         filteredAndSortedLaps.current = [];
 
@@ -57,7 +57,7 @@ const RaceDetailsPanel = ({ laps, uniqueTransponders }) => {
             }
         }
 
-    }, [laps, uniqueTransponders]);
+    }); // [laps, uniqueTransponders]
 
     return (
         <>

@@ -30,7 +30,7 @@ const RaceTimer = (props) => {
   return (
     <div>
       { minutes === 0 && seconds === 0
-        ? null
+        ? <h1>Race Over</h1>
         : <h1> Remaining: {minutes}m:{seconds < 10 ? `0${seconds}` : seconds}s</h1>
       }
     </div>

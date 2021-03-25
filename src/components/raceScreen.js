@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import RaceDetailsPanel from './raceDetailsPanel';
 import RaceTimer from './RaceTimer';
 import StartRaceButton from './startRaceButton';
@@ -6,127 +6,119 @@ import StopListeningButton from './stopListeningButton';
 
 
 
-class RaceScreen extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            uniqueTransponders: [],
-            laps: [],
-            raceStatus: 'notstarted',
-            lapNumber: 1
-        }
+const RaceScreen = () => {
 
-        this.getRaceData = this.getRaceData.bind(this);
-        this.getFakeRaceData = this.getFakeRaceData.bind(this);
-        this.handleOnClick = this.handleOnClick.bind(this);
-        this.setRaceStatus = this.setRaceStatus.bind(this);
+    const [uniqueTransponders, setUniqueTransponders] = useState(["1006319", "1003456", "1003666"]);
+    const [laps, setLaps] = useState([]);
+    const [raceStatus, setRaceStatus] = useState('notstarted');
+    const [lapNumber, setLapNumber] = useState(1);
+
+    const startRace = () => {
+        setRaceStatus('running');
+        console.log('raceStatus', raceStatus);
     }
 
-    setRaceStatus() {
-        this.setState({ raceStatus: 'running' });
-        console.log('raceStatus', this.state.raceStatus);
-    }
-
-    handleOnClick(e) {
+    const handleOnClick = (e) => {
         e.preventDefault();
-        if (this.state.raceStatus === 'notstarted') {
-            this.setState({ raceStatus: 'running' });
+        if (raceStatus === 'notstarted') {
+            setRaceStatus('running');
         } else {
-            this.setState({ raceStatus: 'notstarted' });
+            setRaceStatus('notstarted');
         }
     }
 
-    generateRandomNumber(max, min) {
+    const generateRandomNumber = (max, min) => {
         return Math.random() * (max - min) + min;
     }
 
-    async getRaceData() {
-        let self = this;
+    // const runCounter = () => {
+    //     if (raceStatus === 'running') {
+    //         let myInterval = setInterval(() => {
+    //             if (seconds > 0) {
+    //                 setSeconds(seconds - 1);
+    //             }
+    //             if (seconds === 0) {
+    //                 if (minutes === 0) {
+    //                     clearInterval(myInterval)
+    //                 } else {
+    //                     setMinutes(minutes - 1);
+    //                     setSeconds(59);
+    //                 }
+    //             }
+    //         }, 1000)
+    //         return () => {
+    //             clearInterval(myInterval);
+    //         };
+    //     }
+    // };
 
-        if (this.state.raceStatus === 'running') {
-            console.log('I ran');
-            await fetch('http://localhost:3000/liverace/', {
-                method: 'get'
-            })
-                .then(function (response) {
-                    if (response.status !== 200) {
-                        console.log('Looks like there was a problem. Status Code: ' +
-                            response.status);
-                        return;
-                    }
+    // async getRaceData() {
+    //     let self = this;
 
-                    response.json().then(function (data) {
-                        self.setState({ laps: data.laps });
-                        self.setState({ uniqueTransponders: data.uniqueTransponders });
-                        console.log('lap data:', data.laps);
-                    })
+    //     if (raceStatus === 'running') {
+    //         console.log('I ran');
+    //         await fetch('http://localhost:3000/liverace/', {
+    //             method: 'get'
+    //         })
+    //             .then(function (response) {
+    //                 if (response.status !== 200) {
+    //                     console.log('Looks like there was a problem. Status Code: ' +
+    //                         response.status);
+    //                     return;
+    //                 }
 
-                })
-                .catch(function (err) {
-                    console.log('Fetch Error :-S', err);
-                })
-        }
+    //                 response.json().then(function (data) {
+    //                     self.setState({ laps: data.laps });
+    //                     self.setState({ uniqueTransponders: data.uniqueTransponders });
+    //                     console.log('lap data:', data.laps);
+    //                 })
+
+    //             })
+    //             .catch(function (err) {
+    //                 console.log('Fetch Error :-S', err);
+    //             })
+    //     }
+    // }
+
+    const getFakeRaceData = () => {
+        console.log('I\'m sending fake race data');
+        var tempLaps = laps;
+
+        uniqueTransponders.forEach(transponder => {
+
+            let fakeLap = {
+                transponderId: transponder,
+                lapNo: lapNumber,
+                laptime: generateRandomNumber(7.000, 18.000)
+            }
+
+            tempLaps.push(fakeLap);
+        });
+
+        var newLapNumber = lapNumber + 1;
+        setLapNumber(newLapNumber);
+        return tempLaps;
     }
 
-    async getFakeRaceData() {
-        let self = this;
+    useEffect(() => {
+        if (raceStatus === 'running') {
+            const intervalId = setInterval(() => {
+                setLaps(getFakeRaceData());
+            }, 5000);
 
-
-        if (this.state.raceStatus === 'running') {
-            console.log('I\'m sending fake race data');
-
-            var laps = self.state.laps || [];
-            var lapNumber = self.state.lapNumber;
-            const uniqueTransponders = ["1006319", "1003456", "1003666"];
-            self.setState({ uniqueTransponders: uniqueTransponders });
-
-            //add a new lap
-            uniqueTransponders.forEach(transponder => {
-
-                let fakeLap = {
-                    transponderId: transponder,
-                    lapNo: lapNumber,
-                    laptime: this.generateRandomNumber(7.000, 18.000)
-                }
-
-                laps.push(fakeLap);
-            });
-
-            self.setState({ laps: laps });
-            self.setState({ lapNumber: lapNumber += 1 });
-
+            return () => clearInterval(intervalId);
         }
-    }
+    });
 
-    componentDidMount() {
-
-        const setIntervalAsync = (fn, ms) => {
-            fn().then(() => {
-                setTimeout(() => setIntervalAsync(fn, ms), ms);
-            });
-        };
-
-        try {
-            // setIntervalAsync(this.getRaceData, 5000);
-            setIntervalAsync(this.getFakeRaceData, 5000);
-        } catch (e) {
-            console.log(e);
-        }
-
-
-    }
-
-    render() {
-        return (
-            <div>
-                <RaceTimer initialMinute={'10'} raceStatus={this.state.raceStatus} />
-                <RaceDetailsPanel laps={this.state.laps} uniqueTransponders={this.state.uniqueTransponders} />
-                <StartRaceButton raceInProgress={this.setRaceInProgress} />
-                <StopListeningButton />
-                <button onClick={this.handleOnClick}>toggle fake running</button>
-            </div>
-        );
-    };
+    return (
+        <div>
+            <RaceTimer initialMinute={'10'} raceStatus={raceStatus} />
+            <RaceDetailsPanel laps={laps} uniqueTransponders={uniqueTransponders} />
+            <StartRaceButton raceInProgress={startRace} />
+            <StopListeningButton />
+            <button onClick={handleOnClick}>toggle fake running</button>
+        </div>
+    );
 }
 
 export default RaceScreen;
