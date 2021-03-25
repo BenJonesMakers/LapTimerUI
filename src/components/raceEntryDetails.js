@@ -30,12 +30,12 @@ const RaceEntryDetails = ({ transponderId, filteredLaps = [], totalLapTime, posi
     return (
         <>
             {transponderId && <div key={transponderId}>
-                <h3 style={{ color: '#' + randomColor.current }}>Position {position + 1} -
+                <h5 style={{ color: '#' + randomColor.current }}>Position {position + 1} -
                 Car: {transponderId} -
                 Lap: {currentLap.current} -
                 Last: {lastLapTime.current.toFixed(3)} -
                 Total Time: {formattedTotalLapTime.current}
-                </h3>
+                </h5>
             </div>}
         </>
     )
