@@ -71,7 +71,7 @@ const RaceDetailsPanel = ({ laps, uniqueTransponders }) => {
                         totalLapTime={transponder.totalLapTime}
                         position={index}
                     />
-                )) : <p>empty</p>
+                )) : <p>Race not running</p>
             }
         </>
     )
