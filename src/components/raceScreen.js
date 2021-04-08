@@ -8,7 +8,7 @@ import StopListeningButton from './stopListeningButton';
 
 const RaceScreen = () => {
 
-    const [uniqueTransponders, setUniqueTransponders] = useState(["1006319", "1003456", "1003666"]);
+    const uniqueTransponders = ["1006319", "1003456", "1003666"];
     const [laps, setLaps] = useState([]);
     const [raceStatus, setRaceStatus] = useState('notstarted');
     const [lapNumber, setLapNumber] = useState(1);

@@ -7,17 +7,16 @@ const RaceEntryDetails = ({ transponderId, filteredLaps = [], totalLapTime, posi
     let formattedTotalLapTime = useRef(0.000);
     let randomColor = useRef(0);
 
-    useEffect(() => {
-        randomColor.current = Math.floor(Math.random() * 255);
-        console.log(randomColor.current);
-    }, []);
+    // useEffect(() => {
+    //     randomColor.current = Math.floor(Math.random() * 255);
+    // }, []);
 
     useEffect(() => {
-        if (filteredLaps.length > 0) {
+        if (filteredLaps.length) {
             currentLap.current = filteredLaps[filteredLaps.length - 1].lapNo;
             lastLapTime.current = filteredLaps[filteredLaps.length - 1].laptime;
         }
-    }, [filteredLaps]);
+    }, [filteredLaps.length, filteredLaps]);
 
     useEffect(() => {
         var minutes = Math.floor(totalLapTime / 60);

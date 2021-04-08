@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import NewRaceLeader from './NewRaceLeader';
 import RaceEntryDetails from './raceEntryDetails'
 
-const RaceDetailsPanel = ({ laps, uniqueTransponders }) => {
+const RaceDetailsPanel = ({ laps = [], uniqueTransponders }) => {
 
     const filteredAndSortedLaps = useRef([]);
     // object in array is:
@@ -13,9 +13,8 @@ const RaceDetailsPanel = ({ laps, uniqueTransponders }) => {
     // }
     const [raceLeaderChanged, setRaceLeaderChanged] = useState(false);
 
-
     useEffect(() => {
-        console.log('Panel', laps);
+
         let oldFSL = filteredAndSortedLaps.current || [];
         filteredAndSortedLaps.current = [];
 
@@ -57,7 +56,7 @@ const RaceDetailsPanel = ({ laps, uniqueTransponders }) => {
             }
         }
 
-    }); // [laps, uniqueTransponders]
+    }, [laps.length, laps, uniqueTransponders.length, uniqueTransponders]);
 
     return (
         <>
