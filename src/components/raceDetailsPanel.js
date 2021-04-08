@@ -58,6 +58,14 @@ const RaceDetailsPanel = ({ laps = [], uniqueTransponders }) => {
 
     }, [laps.length, laps, uniqueTransponders.length, uniqueTransponders]);
 
+    const getGap = (index, nextTotalLapTime) => {
+        if (index < 1) {
+            return '---';
+        }
+        const gap = nextTotalLapTime - filteredAndSortedLaps.current[index - 1].totalLapTime;
+        return gap.toFixed(3);
+    }
+
     return (
         <>
             {raceLeaderChanged && <NewRaceLeader />}
@@ -69,6 +77,7 @@ const RaceDetailsPanel = ({ laps = [], uniqueTransponders }) => {
                         filteredLaps={transponder.filteredLaps}
                         totalLapTime={transponder.totalLapTime}
                         position={index}
+                        gap={getGap(index, transponder.totalLapTime)}
                     />
                 )) : <p>Race not running</p>
             }
