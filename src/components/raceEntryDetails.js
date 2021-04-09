@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Col, Row } from 'react-bootstrap';
+import getRealName from '../helpers/TransponderLookup';
 
 const RaceEntryDetails = ({ transponderId, filteredLaps = [], totalLapTime, position, gap }) => {
 
@@ -27,7 +28,7 @@ const RaceEntryDetails = ({ transponderId, filteredLaps = [], totalLapTime, posi
         <>
             { transponderId && <Row key={transponderId} >
                 <Col > P{position + 1}</Col>
-                <Col>{transponderId}</Col>
+                <Col>{getRealName(transponderId)}</Col>
                 <Col>{currentLap.current}</Col>
                 <Col style={{ textAlign: "right" }} >{lastLapTime.current.toFixed(3)}</Col>
                 <Col style={{ textAlign: "right" }} >{formattedTotalLapTime.current}</Col>
