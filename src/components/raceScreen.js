@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { getFakeRaceData } from '../helpers/RaceData';
-
 import RaceDetailsPanel from './raceDetailsPanel';
 import RaceTimer from './RaceTimer';
 import StartRaceButton from './startRaceButton';
