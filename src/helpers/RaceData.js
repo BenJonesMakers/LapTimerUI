@@ -19,6 +19,22 @@ export const getFakeRaceData = (uniqueTransponders, lapNumber) => {
   return tempLaps;
 }
 
+export const getFakeRaceDataSingleTransponder = (transponder, lapNumber) => {
+
+  console.log('I\'m sending fake race data.  For Transponder: ', transponder, lapNumber);
+  var tempLaps = [];
+
+  let fakeLap = {
+    transponderId: transponder,
+    lapNo: lapNumber,
+    laptime: generateRandomNumber(8.000, 10.000)
+  }
+
+  tempLaps.push(fakeLap);
+
+  return tempLaps;
+}
+
 // async getRaceData() {
 //     let self = this;
 

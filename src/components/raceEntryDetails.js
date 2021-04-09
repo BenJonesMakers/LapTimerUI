@@ -2,18 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import getRealName from '../helpers/TransponderLookup';
 
-const RaceEntryDetails = ({ transponderId, filteredLaps = [], totalLapTime, position, gap }) => {
+const RaceEntryDetails = ({ transponderId, currentLap, lastLapTime, totalLapTime, position, gap }) => {
 
-    let currentLap = useRef(0);
-    let lastLapTime = useRef(0.000);
     let formattedTotalLapTime = useRef(0.000);
 
     useEffect(() => {
-        if (filteredLaps.length) {
-            currentLap.current = filteredLaps[filteredLaps.length - 1].lapNo;
-            lastLapTime.current = filteredLaps[filteredLaps.length - 1].laptime;
-        }
-    }, [filteredLaps]);
+        console.log('Details has new lap data.  Last laptime: ', lastLapTime);
+    }, [lastLapTime]);
 
     useEffect(() => {
         var minutes = Math.floor(totalLapTime / 60);
@@ -36,8 +31,8 @@ const RaceEntryDetails = ({ transponderId, filteredLaps = [], totalLapTime, posi
             { transponderId && <Row key={transponderId} >
                 <Col > P{position + 1}</Col>
                 <Col>{getRealName(transponderId)}</Col>
-                <Col>{currentLap.current}</Col>
-                <Col style={{ textAlign: "right" }} >{lastLapTime.current.toFixed(3)}</Col>
+                <Col>{currentLap}</Col>
+                <Col style={{ textAlign: "right" }} >{lastLapTime.toFixed(3)}</Col>
                 <Col style={{ textAlign: "right" }} >{formattedTotalLapTime.current}</Col>
                 <Col>(+{gap}) </Col>
             </Row>

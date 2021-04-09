@@ -10,6 +10,7 @@ const RaceDetailsPanel = ({ laps = [], uniqueTransponders }) => {
     const [raceLeaderChanged, setRaceLeaderChanged] = useState(false);
 
     useEffect(() => {
+        console.log('Panel has new lap data: ', laps);
 
         let oldFSL = filteredAndSortedLaps.current || [];
         filteredAndSortedLaps.current = [];
@@ -58,7 +59,8 @@ const RaceDetailsPanel = ({ laps = [], uniqueTransponders }) => {
                     <RaceEntryDetails
                         key={transponder.transponderId}
                         transponderId={transponder.transponderId}
-                        filteredLaps={transponder.filteredLaps}
+                        currentLap={transponder.filteredLaps[transponder.filteredLaps.length - 1].lapNo}
+                        lastLapTime={transponder.filteredLaps[transponder.filteredLaps.length - 1].laptime}
                         totalLapTime={transponder.totalLapTime}
                         position={index}
                         gap={getGap(index, transponder.totalLapTime, filteredAndSortedLaps.current)}
