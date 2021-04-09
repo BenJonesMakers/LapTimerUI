@@ -34,7 +34,7 @@ const RaceEntryDetails = ({ transponderId, currentLap, lastLapTime, totalLapTime
                 <Col>{currentLap}</Col>
                 <Col style={{ textAlign: "right" }} >{lastLapTime.toFixed(3)}</Col>
                 <Col style={{ textAlign: "right" }} >{formattedTotalLapTime.current}</Col>
-                <Col>(+{gap}) </Col>
+                <Col>{gap} </Col>
             </Row>
             }
         </>
