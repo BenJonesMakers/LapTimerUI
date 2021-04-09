@@ -21,6 +21,6 @@ export const getGap = (myRacePosition, myLapTime, filteredAndSortedLaps) => {
 
   if (filteredAndSortedLaps.length && opponentPosition < filteredAndSortedLaps.length) {
     const gap = myLapTime - filteredAndSortedLaps[opponentPosition].totalLapTime;
-    return gap.toFixed(3);
+    return Math.abs(gap.toFixed(3));
   }
 }
