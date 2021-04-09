@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Col, Row } from 'react-bootstrap';
 
 const RaceEntryDetails = ({ transponderId, filteredLaps = [], totalLapTime, position, gap }) => {
 
@@ -24,15 +25,15 @@ const RaceEntryDetails = ({ transponderId, filteredLaps = [], totalLapTime, posi
 
     return (
         <>
-            {transponderId && <div key={transponderId}>
-                <h5>Position {position + 1} -
-                Car: {transponderId} -
-                Lap: {currentLap.current} -
-                Last: {lastLapTime.current.toFixed(3)} -
-                Total Time: {formattedTotalLapTime.current} -
-                ( Gap: {gap} )
-                </h5>
-            </div>}
+            { transponderId && <Row key={transponderId} >
+                <Col > P{position + 1}</Col>
+                <Col>{transponderId}</Col>
+                <Col>{currentLap.current}</Col>
+                <Col style={{ textAlign: "right" }} >{lastLapTime.current.toFixed(3)}</Col>
+                <Col style={{ textAlign: "right" }} >{formattedTotalLapTime.current}</Col>
+                <Col>(+{gap}) </Col>
+            </Row>
+            }
         </>
     )
 }

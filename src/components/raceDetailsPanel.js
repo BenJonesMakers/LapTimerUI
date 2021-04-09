@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import NewRaceLeader from './NewRaceLeader';
 import RaceEntryDetails from './raceEntryDetails'
+import { Container, Row, Col } from 'react-bootstrap';
 
 const RaceDetailsPanel = ({ laps = [], uniqueTransponders }) => {
 
@@ -24,7 +25,7 @@ const RaceDetailsPanel = ({ laps = [], uniqueTransponders }) => {
 
         const totalLapTime = (transponder) => {
             var totalLapTimeByTransponder = filteredLaps(transponder).reduce(function (prev, current) {
-                return prev + +current.laptime
+                return prev + current.laptime
             }, 0);
 
             return totalLapTimeByTransponder.toFixed(3);
@@ -67,8 +68,16 @@ const RaceDetailsPanel = ({ laps = [], uniqueTransponders }) => {
     }
 
     return (
-        <>
+        <Container fluid>
             {raceLeaderChanged && <NewRaceLeader />}
+            <Row>
+                <Col>Position</Col>
+                <Col>Name</Col>
+                <Col>Lap</Col>
+                <Col>Last</Col>
+                <Col>Total</Col>
+                <Col>Gap</Col>
+            </Row>
             {filteredAndSortedLaps.current.length > 0 ?
                 filteredAndSortedLaps.current.map((transponder, index) => (
                     <RaceEntryDetails
@@ -81,7 +90,7 @@ const RaceDetailsPanel = ({ laps = [], uniqueTransponders }) => {
                     />
                 )) : <p>Race not running</p>
             }
-        </>
+        </Container>
     )
 
 }

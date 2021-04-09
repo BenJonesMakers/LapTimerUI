@@ -111,7 +111,7 @@ const RaceScreen = () => {
     });
 
     return (
-        <div>
+        <div style={{ width: "100%" }} >
             <RaceTimer initialMinute={'10'} raceStatus={raceStatus} />
             <RaceDetailsPanel laps={laps} uniqueTransponders={uniqueTransponders} />
             <StartRaceButton raceInProgress={startRace} />
