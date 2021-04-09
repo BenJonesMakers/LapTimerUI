@@ -6,9 +6,9 @@ const RaceEntryDetails = ({ transponderId, currentLap, lastLapTime, totalLapTime
 
     let formattedTotalLapTime = useRef(0.000);
 
-    useEffect(() => {
-        console.log('Details has new lap data.  Last laptime: ', lastLapTime);
-    }, [lastLapTime]);
+    // useEffect(() => {
+    //     console.log('Details has new lap data.  Last laptime: ', lastLapTime);
+    // }, [lastLapTime]);
 
     useEffect(() => {
         var minutes = Math.floor(totalLapTime / 60);

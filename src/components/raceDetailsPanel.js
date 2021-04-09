@@ -10,7 +10,6 @@ const RaceDetailsPanel = ({ laps = [], uniqueTransponders }) => {
     const [raceLeaderChanged, setRaceLeaderChanged] = useState(false);
 
     useEffect(() => {
-        console.log('Panel has new lap data: ', laps);
 
         let oldFSL = filteredAndSortedLaps.current || [];
         filteredAndSortedLaps.current = [];
@@ -20,6 +19,7 @@ const RaceDetailsPanel = ({ laps = [], uniqueTransponders }) => {
                 filteredAndSortedLaps.current.push(
                     {
                         transponderId: transponderId,
+                        totalLaps: filteredLaps(transponderId, laps).length,
                         filteredLaps: filteredLaps(transponderId, laps),
                         totalLapTime: totalLapTime(filteredLaps(transponderId, laps))
                     }
@@ -27,7 +27,8 @@ const RaceDetailsPanel = ({ laps = [], uniqueTransponders }) => {
 
             });
 
-            filteredAndSortedLaps.current = filteredAndSortedLaps.current.sort((a, b) => a.totalLapTime - b.totalLapTime);
+            filteredAndSortedLaps.current = filteredAndSortedLaps.current
+                .sort((a, b) => (b.totalLaps - a.totalLaps || a.totalLapTime - b.totalLapTime));
 
             // check if position has changed
             setRaceLeaderChanged(false);

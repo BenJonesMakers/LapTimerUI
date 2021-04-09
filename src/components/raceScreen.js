@@ -45,7 +45,7 @@ const RaceScreen = () => {
                     updatedObject[randomTransponder] = currentLap + 1;
                     return updatedObject;
                 })
-                console.log(transpondersAndLaps);
+
                 uniqueTransponders.current = [...new Set(laps.map(item => item.transponderId))];
 
             }, 1000);
