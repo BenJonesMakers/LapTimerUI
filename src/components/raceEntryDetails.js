@@ -19,7 +19,14 @@ const RaceEntryDetails = ({ transponderId, filteredLaps = [], totalLapTime, posi
         var minutes = Math.floor(totalLapTime / 60);
         var seconds = totalLapTime - minutes * 60;
 
-        formattedTotalLapTime.current = minutes + 'm:' + seconds.toFixed(3) + 's';
+        if (seconds < 10) {
+            seconds = '0' + seconds.toFixed(3);
+        }
+        else {
+            seconds = seconds.toFixed(3);
+        }
+
+        formattedTotalLapTime.current = minutes + 'm ' + seconds + 's';
 
     }, [totalLapTime]);
 
