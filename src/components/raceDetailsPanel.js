@@ -2,47 +2,30 @@ import React, { useEffect, useRef, useState } from 'react';
 import NewRaceLeader from './NewRaceLeader';
 import RaceEntryDetails from './raceEntryDetails'
 import { Container, Row, Col } from 'react-bootstrap';
-import { getGap, filteredLaps, totalLapTime } from '../helpers/Utilities';
+import { getGap } from '../helpers/Utilities';
 
-const RaceDetailsPanel = ({ laps = [], uniqueTransponders }) => {
+const RaceDetailsPanel = ({ filteredAndSortedLaps = [] }) => {
 
-    const filteredAndSortedLaps = useRef([]);
     const [raceLeaderChanged, setRaceLeaderChanged] = useState(false);
 
     useEffect(() => {
 
-        let oldFSL = filteredAndSortedLaps.current || [];
-        filteredAndSortedLaps.current = [];
+        let oldFSL = filteredAndSortedLaps || [];
 
-        if (laps.length) {
-            uniqueTransponders.forEach(transponderId => {
-                filteredAndSortedLaps.current.push(
-                    {
-                        transponderId: transponderId,
-                        totalLaps: filteredLaps(transponderId, laps).length,
-                        filteredLaps: filteredLaps(transponderId, laps),
-                        totalLapTime: totalLapTime(filteredLaps(transponderId, laps))
-                    }
-                );
+        if (filteredAndSortedLaps.length) {
 
-            });
-
-            filteredAndSortedLaps.current = filteredAndSortedLaps.current
-                .sort((a, b) => (b.totalLaps - a.totalLaps || a.totalLapTime - b.totalLapTime));
-
-            // check if position has changed
             setRaceLeaderChanged(false);
 
             if (oldFSL.length) {
                 var oldLeader = oldFSL[0].transponderId;
-                var newLeader = filteredAndSortedLaps.current[0].transponderId;
+                var newLeader = filteredAndSortedLaps[0].transponderId;
                 if (oldLeader !== newLeader) {
                     setRaceLeaderChanged(true);
                 }
             }
         }
 
-    }, [laps.length, laps, uniqueTransponders.length, uniqueTransponders]);
+    }, [filteredAndSortedLaps, filteredAndSortedLaps.length]);
 
     return (
         <Container fluid>
@@ -55,8 +38,8 @@ const RaceDetailsPanel = ({ laps = [], uniqueTransponders }) => {
                 <Col>Total</Col>
                 <Col>Gap</Col>
             </Row>
-            {filteredAndSortedLaps.current.length > 0 ?
-                filteredAndSortedLaps.current.map((transponder, index) => (
+            {filteredAndSortedLaps.length > 0 ?
+                filteredAndSortedLaps.map((transponder, index) => (
                     <RaceEntryDetails
                         key={transponder.transponderId}
                         transponderId={transponder.transponderId}
@@ -64,7 +47,7 @@ const RaceDetailsPanel = ({ laps = [], uniqueTransponders }) => {
                         lastLapTime={transponder.filteredLaps[transponder.filteredLaps.length - 1].laptime}
                         totalLapTime={transponder.totalLapTime}
                         position={index}
-                        gap={getGap(index, transponder.totalLapTime, filteredAndSortedLaps.current)}
+                        gap={getGap(index, transponder.totalLapTime, filteredAndSortedLaps)}
                     />
                 )) : <p>Race not running</p>
             }

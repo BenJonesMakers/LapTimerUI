@@ -35,30 +35,27 @@ export const getFakeRaceDataSingleTransponder = (transponder, lapNumber) => {
   return tempLaps;
 }
 
-// async getRaceData() {
-//     let self = this;
+export const getFakeAPIRaceData = () => {
 
-//     if (raceStatus === 'running') {
-//         console.log('I ran');
-//         await fetch('http://localhost:3000/liverace/', {
-//             method: 'get'
-//         })
-//             .then(function (response) {
-//                 if (response.status !== 200) {
-//                     console.log('Looks like there was a problem. Status Code: ' +
-//                         response.status);
-//                     return;
-//                 }
+  return fetch('http://localhost:3000/liverace/testrace', {
+    method: 'get'
+  })
+    .then(function (response) {
+      if (response.status !== 200) {
+        console.log('Looks like there was a problem. Status Code: ' +
+          response.status);
+        return;
+      }
 
-//                 response.json().then(function (data) {
-//                     self.setState({ laps: data.laps });
-//                     self.setState({ uniqueTransponders: data.uniqueTransponders });
-//                     console.log('lap data:', data.laps);
-//                 })
+      response.json().then(function (data) {
 
-//             })
-//             .catch(function (err) {
-//                 console.log('Fetch Error :-S', err);
-//             })
-//     }
-// }
+        console.log('inside function: ', data);
+        return data;
+      })
+
+    })
+    .catch(function (err) {
+      console.log('Fetch Error :-S', err);
+    })
+
+}

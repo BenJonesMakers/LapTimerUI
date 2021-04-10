@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { getFakeRaceDataSingleTransponder } from '../helpers/RaceData';
 import RaceDetailsPanel from './raceDetailsPanel';
 import RaceTimer from './RaceTimer';
 import StartRaceButton from './startRaceButton';
@@ -7,13 +6,8 @@ import StopListeningButton from './stopListeningButton';
 
 const RaceScreen = () => {
 
-    const exampleTransponders = ["1006319", "1003456", "1003666"];
-    const [transpondersAndLaps, setTranspondersAndLaps] = useState({
-        '1006319': 0,
-        '1003456': 0,
-        '1003666': 0
-    })
     const [laps, setLaps] = useState([]);
+    const [raceDetails, setRaceDetails] = useState({});
     const [raceStatus, setRaceStatus] = useState('notstarted');
     let uniqueTransponders = useRef([]);
 
@@ -31,33 +25,43 @@ const RaceScreen = () => {
         }
     }
 
+    const getFakeAPIRaceData = () => {
+
+        return fetch('http://localhost:3000/liverace/testrace', {
+            method: 'get'
+        })
+            .then(function (response) {
+                if (response.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' +
+                        response.status);
+                    return;
+                }
+                response.json().then(function (data) {
+                    setRaceDetails(data);
+                    setLaps(data.laps)
+                })
+
+            })
+            .catch(function (err) {
+                console.log('Fetch Error :-S', err);
+            })
+    }
 
     useEffect(() => {
         if (raceStatus === 'running') {
+
             const intervalId = setInterval(() => {
-                var randomTransponder = exampleTransponders[Math.floor(Math.random() * exampleTransponders.length)];
-                var currentLap = transpondersAndLaps[randomTransponder];
-                const fakeLap = getFakeRaceDataSingleTransponder(randomTransponder, currentLap);
-
-                setLaps(laps => [...laps, ...fakeLap]);
-                setTranspondersAndLaps(prevState => {
-                    let updatedObject = Object.assign({ ...prevState }, prevState.updatedObject);
-                    updatedObject[randomTransponder] = currentLap + 1;
-                    return updatedObject;
-                })
-
-                uniqueTransponders.current = [...new Set(laps.map(item => item.transponderId))];
-
+                getFakeAPIRaceData();
             }, 1000);
-
             return () => clearInterval(intervalId);
         }
+
     });
 
     return (
         <div style={{ width: "100%" }} >
             <RaceTimer initialMinute={'10'} raceStatus={raceStatus} />
-            <RaceDetailsPanel laps={laps} uniqueTransponders={uniqueTransponders.current} />
+            <RaceDetailsPanel filteredAndSortedLaps={raceDetails.raceData} />
             <StartRaceButton raceInProgress={startRace} />
             <StopListeningButton />
             <button onClick={handleOnClick}>toggle fake running</button>

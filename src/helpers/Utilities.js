@@ -2,10 +2,6 @@ export const generateRandomNumber = (max, min) => {
   return Math.random() * (max - min) + min;
 }
 
-export const filteredLaps = (transponder, laps) => {
-  return laps.filter(lap => lap.transponderId === transponder);
-}
-
 export const totalLapTime = (filteredLaps) => {
   var totalLapTimeByTransponder = filteredLaps.reduce(function (prev, current) {
     return prev + current.laptime
