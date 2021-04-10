@@ -44,10 +44,17 @@ const RaceScreen = () => {
             })
     }
 
+    const generateFakeLap = () => {
+        return fetch('http://localhost:3000/liverace/generatetestlap', {
+            method: 'post'
+        })
+    }
+
     useEffect(() => {
         if (raceStatus === 'running') {
 
             const intervalId = setInterval(() => {
+                generateFakeLap();
                 getFakeAPIRaceData();
             }, 1000);
             return () => clearInterval(intervalId);
