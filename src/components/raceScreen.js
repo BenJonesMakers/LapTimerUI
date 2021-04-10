@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import RaceDetailsPanel from './raceDetailsPanel';
 import RaceTimer from './RaceTimer';
 import StartRaceButton from './startRaceButton';
@@ -6,10 +6,8 @@ import StopListeningButton from './stopListeningButton';
 
 const RaceScreen = () => {
 
-    const [laps, setLaps] = useState([]);
     const [raceDetails, setRaceDetails] = useState({});
     const [raceStatus, setRaceStatus] = useState('notstarted');
-    let uniqueTransponders = useRef([]);
 
     const startRace = () => {
         setRaceStatus('running');
@@ -38,7 +36,6 @@ const RaceScreen = () => {
                 }
                 response.json().then(function (data) {
                     setRaceDetails(data);
-                    setLaps(data.laps)
                 })
 
             })

@@ -2,14 +2,6 @@ export const generateRandomNumber = (max, min) => {
   return Math.random() * (max - min) + min;
 }
 
-export const totalLapTime = (filteredLaps) => {
-  var totalLapTimeByTransponder = filteredLaps.reduce(function (prev, current) {
-    return prev + current.laptime
-  }, 0);
-
-  return totalLapTimeByTransponder.toFixed(3);
-}
-
 export const getGap = (myRacePosition, myLapTime, filteredAndSortedLaps) => {
   const opponentPosition = myRacePosition - 1;
 
