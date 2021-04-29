@@ -3,8 +3,9 @@ import NewRaceLeader from './NewRaceLeader';
 import RaceEntryDetails from './raceEntryDetails'
 import { Container, Row, Col } from 'react-bootstrap';
 import { getGap } from '../helpers/Utilities';
+import FastestLap from './FastestLap';
 
-const RaceDetailsPanel = ({ filteredAndSortedLaps = [] }) => {
+const RaceDetailsPanel = ({ filteredAndSortedLaps = [], fastestLap }) => {
 
     const [raceLeaderChanged, setRaceLeaderChanged] = useState(false);
 
@@ -51,6 +52,8 @@ const RaceDetailsPanel = ({ filteredAndSortedLaps = [] }) => {
                     />
                 )) : <p>Race not running</p>
             }
+
+            <FastestLap fastestLap={fastestLap} />
         </Container>
     )
 

@@ -8,6 +8,7 @@ const RaceScreen = () => {
 
     const [raceDetails, setRaceDetails] = useState({});
     const [raceStatus, setRaceStatus] = useState('notstarted');
+    const [fastestLap, setFastestLap] = useState({});
 
     const startRace = () => {
         setRaceStatus('running');
@@ -36,6 +37,7 @@ const RaceScreen = () => {
                 }
                 response.json().then(function (data) {
                     setRaceDetails(data);
+                    setFastestLap(data.fastestLap);
                 })
 
             })
@@ -65,7 +67,7 @@ const RaceScreen = () => {
     return (
         <div style={{ width: "100%" }} >
             <RaceTimer initialMinute={'10'} raceStatus={raceStatus} />
-            <RaceDetailsPanel filteredAndSortedLaps={raceDetails.raceData} />
+            <RaceDetailsPanel filteredAndSortedLaps={raceDetails.raceData} fastestLap={fastestLap} />
             <StartRaceButton raceInProgress={startRace} />
             <StopListeningButton />
             <button onClick={handleOnClick}>toggle fake running</button>
