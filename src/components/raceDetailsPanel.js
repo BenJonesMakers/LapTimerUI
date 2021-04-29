@@ -8,29 +8,28 @@ import FastestLap from './FastestLap';
 const RaceDetailsPanel = ({ filteredAndSortedLaps = [], fastestLap }) => {
 
     const [raceLeaderChanged, setRaceLeaderChanged] = useState(false);
+    const [raceLeader, setRaceLeader] = useState('');
 
     useEffect(() => {
 
-        let oldFSL = filteredAndSortedLaps || [];
-
         if (filteredAndSortedLaps.length) {
+            const possibleNewRaceLeader = filteredAndSortedLaps[0].transponderId;
 
-            setRaceLeaderChanged(false);
+            if (raceLeader !== possibleNewRaceLeader) {
 
-            if (oldFSL.length) {
-                var oldLeader = oldFSL[0].transponderId;
-                var newLeader = filteredAndSortedLaps[0].transponderId;
-                if (oldLeader !== newLeader) {
-                    setRaceLeaderChanged(true);
-                }
+                setRaceLeaderChanged(true);
+                setRaceLeader(possibleNewRaceLeader);
+
+            } else {
+                setRaceLeaderChanged(false);
             }
         }
 
-    }, [filteredAndSortedLaps, filteredAndSortedLaps.length]);
+    }, [filteredAndSortedLaps, filteredAndSortedLaps.length, raceLeader]);
 
     return (
         <Container fluid>
-            {raceLeaderChanged && <NewRaceLeader />}
+            {raceLeaderChanged && <NewRaceLeader newLeader={raceLeader} />}
             <Row>
                 <Col>Position</Col>
                 <Col>Name</Col>
