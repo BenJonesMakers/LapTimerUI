@@ -11,9 +11,9 @@ const FastestLap = (props) => {
 
 
   return (
-    <>
+    <h4>
       {transponder ? `Fastest Lap: ${lapTime.toFixed(3)} by ${getRealName(transponder)}` : 'No fastest lap recorded'}
-    </>
+    </h4>
   )
 }
 

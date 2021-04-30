@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import RaceDetailsPanel from './raceDetailsPanel';
-import RaceTimer from './RaceTimer';
-import StartRaceButton from './startRaceButton';
-import StopListeningButton from './stopListeningButton';
+import RaceDetailsPanel from '../components/raceDetailsPanel';
+import RaceTimer from '../components/RaceTimer';
+import StartRaceButton from '../components/startRaceButton';
+import StopListeningButton from '../components/stopListeningButton';
 
-const RaceScreen = () => {
+const RaceScreen = (props) => {
 
     const [raceDetails, setRaceDetails] = useState({});
     const [raceStatus, setRaceStatus] = useState('notstarted');
@@ -17,6 +17,7 @@ const RaceScreen = () => {
 
     const handleOnClick = (e) => {
         e.preventDefault();
+        props.toggleRaceStatus();
         if (raceStatus === 'notstarted') {
             setRaceStatus('running');
         } else {

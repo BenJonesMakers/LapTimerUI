@@ -28,8 +28,8 @@ const RaceDetailsPanel = ({ filteredAndSortedLaps = [], fastestLap }) => {
     }, [filteredAndSortedLaps, filteredAndSortedLaps.length, raceLeader]);
 
     return (
-        <Container fluid>
-            {raceLeaderChanged && <NewRaceLeader newLeader={raceLeader} />}
+        <Container fluid style={{ height: 450 }} >
+
             <Row>
                 <Col>Position</Col>
                 <Col>Name</Col>
@@ -53,6 +53,7 @@ const RaceDetailsPanel = ({ filteredAndSortedLaps = [], fastestLap }) => {
             }
 
             <FastestLap fastestLap={fastestLap} />
+            {raceLeaderChanged && <NewRaceLeader newLeader={raceLeader} />}
         </Container>
     )
 
