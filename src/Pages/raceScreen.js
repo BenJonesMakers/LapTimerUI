@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import RaceDetailsPanel from '../components/raceDetailsPanel';
 import RaceTimer from '../components/RaceTimer';
-import StartRaceButton from '../components/startRaceButton';
-import StopListeningButton from '../components/stopListeningButton';
+import StartRaceButton from '../components/StartRaceButton';
+import EndRaceButton from '../components/EndRaceButton';
 
 const RaceScreen = (props) => {
 
@@ -12,6 +12,11 @@ const RaceScreen = (props) => {
 
     const startRace = () => {
         setRaceStatus('running');
+        console.log('raceStatus', raceStatus);
+    }
+
+    const endRace = () => {
+        setRaceStatus('notstarted');
         console.log('raceStatus', raceStatus);
     }
 
@@ -70,7 +75,7 @@ const RaceScreen = (props) => {
             <RaceTimer initialMinute={'10'} raceStatus={raceStatus} />
             <RaceDetailsPanel filteredAndSortedLaps={raceDetails.raceData} fastestLap={fastestLap} />
             <StartRaceButton raceInProgress={startRace} />
-            <StopListeningButton />
+            <EndRaceButton raceInProgress={endRace} />
             <button onClick={handleOnClick}>toggle fake running</button>
         </div>
     );
