@@ -3,12 +3,14 @@ import RaceDetailsPanel from '../components/raceDetailsPanel';
 import RaceTimer from '../components/RaceTimer';
 import StartRaceButton from '../components/StartRaceButton';
 import EndRaceButton from '../components/EndRaceButton';
+import RaceId from '../components/RaceId';
 
 const RaceScreen = (props) => {
 
     const [raceDetails, setRaceDetails] = useState({});
     const [raceStatus, setRaceStatus] = useState('notstarted');
     const [fastestLap, setFastestLap] = useState({});
+    const [raceID, setRaceID] = useState('000');
 
     const startRace = () => {
         setRaceStatus('running');
@@ -44,6 +46,7 @@ const RaceScreen = (props) => {
                 response.json().then(function (data) {
                     setRaceDetails(data);
                     setFastestLap(data.fastestLap);
+                    setRaceID(data.raceID);
                 })
 
             })
@@ -73,6 +76,7 @@ const RaceScreen = (props) => {
     return (
         <div style={{ width: "100%" }} >
             <RaceTimer initialMinute={'10'} raceStatus={raceStatus} />
+            <RaceId raceId={raceID} />
             <RaceDetailsPanel filteredAndSortedLaps={raceDetails.raceData} fastestLap={fastestLap} />
             <StartRaceButton raceInProgress={startRace} />
             <EndRaceButton raceInProgress={endRace} />
