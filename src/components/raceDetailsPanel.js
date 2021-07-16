@@ -5,31 +5,53 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { getGap } from '../helpers/Utilities';
 import FastestLap from './FastestLap';
 
-const RaceDetailsPanel = ({ filteredAndSortedLaps = [], fastestLap }) => {
+const RaceDetailsPanel = (props) => {
 
     const [raceLeaderChanged, setRaceLeaderChanged] = useState(false);
     const [raceLeader, setRaceLeader] = useState('');
 
-    useEffect(() => {
+    console.log('prop', props.filteredAndSortedLaps);
 
-        if (filteredAndSortedLaps.length) {
-            const possibleNewRaceLeader = filteredAndSortedLaps[0].transponderId;
+    // useEffect(() => {
+    //     if (props.filteredAndSortedLaps) {
+    //         const possibleNewRaceLeader = props.filteredAndSortedLaps[0].transponderId;
 
-            if (raceLeader !== possibleNewRaceLeader) {
+    //         if (raceLeader !== possibleNewRaceLeader) {
+    //             setRaceLeaderChanged(true);
+    //             setRaceLeader(possibleNewRaceLeader);
 
-                setRaceLeaderChanged(true);
-                setRaceLeader(possibleNewRaceLeader);
+    //         } else {
+    //             setRaceLeaderChanged(false);
+    //         }
+    //     }
+    // }, [props.filteredAndSortedLaps, raceLeader]);
 
-            } else {
-                setRaceLeaderChanged(false);
-            }
+    if (props.filteredAndSortedLaps === undefined) {
+        return <p>No race data</p>
+    }
+    const racers = Object.keys(props.filteredAndSortedLaps).map((transponder, index) => {
+        let laps = props.filteredAndSortedLaps[transponder].laps;
+        let lapNumber = 0;
+        let lastLap = 0;
+        if (laps.length > 1) {
+            lapNumber = laps[laps.length - 1].lapNo;
+            lastLap = laps[laps.length - 1].laptime;
         }
-
-    }, [filteredAndSortedLaps, filteredAndSortedLaps.length, raceLeader]);
-
+        return (
+            <RaceEntryDetails
+                key={props.filteredAndSortedLaps[transponder].transponderId}
+                transponderId={props.filteredAndSortedLaps[transponder].transponderId}
+                currentLap={lapNumber}
+                lastLapTime={lastLap}
+                totalLapTime={props.filteredAndSortedLaps[transponder].totalTime}
+                position={index}
+                gap={getGap(index, props.filteredAndSortedLaps[transponder].totalTime, props.filteredAndSortedLaps)}
+            />
+        );
+    }
+    );
     return (
         <Container fluid style={{ height: 450 }} >
-
             <Row>
                 <Col>Position</Col>
                 <Col>Name</Col>
@@ -38,25 +60,12 @@ const RaceDetailsPanel = ({ filteredAndSortedLaps = [], fastestLap }) => {
                 <Col>Total</Col>
                 <Col>Gap</Col>
             </Row>
-            {filteredAndSortedLaps.length > 0 ?
-                filteredAndSortedLaps.map((transponder, index) => (
-                    <RaceEntryDetails
-                        key={transponder.transponderId}
-                        transponderId={transponder.transponderId}
-                        currentLap={transponder.filteredLaps[transponder.filteredLaps.length - 1].lapNo}
-                        lastLapTime={transponder.filteredLaps[transponder.filteredLaps.length - 1].laptime}
-                        totalLapTime={transponder.totalLapTime}
-                        position={index}
-                        gap={getGap(index, transponder.totalLapTime, filteredAndSortedLaps)}
-                    />
-                )) : <p>Race not running</p>
-            }
-
-            <FastestLap fastestLap={fastestLap} />
+            {racers}
+            <FastestLap fastestLap={props.fastestLap} />
             {raceLeaderChanged && <NewRaceLeader newLeader={raceLeader} />}
-        </Container>
+        </Container >
     )
-
 }
+
 
 export default RaceDetailsPanel;
