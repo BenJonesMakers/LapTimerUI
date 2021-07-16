@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import speech from 'speech-js';
 
 const RaceTimer = (props) => {
   const { countdownSeconds = 10, raceStatus, triggerRaceStart } = props;
   const [seconds, setSeconds] = useState(countdownSeconds);
 
   useEffect(() => {
+
     if (raceStatus === 'countdown') {
       let myInterval = setInterval(() => {
         if (seconds > 0) {
+          if (seconds < 6) {
+            speech.synthesis(seconds, 'en-US');
+          }
           setSeconds(seconds - 1);
         } else {
+          speech.synthesis('Go!', 'en-US');
           triggerRaceStart();
         }
       }, 1000)
