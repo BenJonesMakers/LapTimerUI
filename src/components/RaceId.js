@@ -4,7 +4,7 @@ const RaceId = (props) => {
 
   return (
     <div>
-      <p>{props.raceId}</p>
+      <p>Race Id: {props.raceId}</p>
     </div>
   )
 }

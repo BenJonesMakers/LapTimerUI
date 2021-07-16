@@ -4,6 +4,7 @@ import RaceTimer from '../components/RaceTimer';
 import StartRaceButton from '../components/StartRaceButton';
 import EndRaceButton from '../components/EndRaceButton';
 import RaceId from '../components/RaceId';
+import CountdownTimer from '../components/CountdownTimer';
 
 const RaceScreen = (props) => {
 
@@ -13,6 +14,11 @@ const RaceScreen = (props) => {
     const [raceID, setRaceID] = useState('000');
 
     const startRace = () => {
+        setRaceStatus('countdown');
+        console.log('raceStatus', raceStatus);
+    }
+
+    const startRaceAfterCountdown = () => {
         setRaceStatus('running');
         console.log('raceStatus', raceStatus);
     }
@@ -25,7 +31,7 @@ const RaceScreen = (props) => {
     const handleOnClick = (e) => {
         e.preventDefault();
         props.toggleRaceStatus();
-        if (raceStatus === 'notstarted') {
+        if (raceStatus === 'notstarted' || raceStatus === 'countdown') {
             setRaceStatus('running');
         } else {
             setRaceStatus('notstarted');
@@ -75,7 +81,8 @@ const RaceScreen = (props) => {
 
     return (
         <div style={{ width: "100%" }} >
-            <RaceTimer initialMinute={'10'} raceStatus={raceStatus} />
+            {raceStatus === 'running' && <RaceTimer initialMinute={'10'} raceStatus={raceStatus} />}
+            {raceStatus === 'countdown' && <CountdownTimer countdownSeconds={'10'} raceStatus={raceStatus} triggerRaceStart={startRaceAfterCountdown} />}
             <RaceId raceId={raceID} />
             <RaceDetailsPanel filteredAndSortedLaps={raceDetails.raceData} fastestLap={fastestLap} />
             <StartRaceButton raceInProgress={startRace} />
