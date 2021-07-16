@@ -7,7 +7,7 @@ const FastestLap = (props) => {
 
   useEffect(() => {
     if (lapTime > 0 && lapTime < 9999) {
-      speech.synthesis(getRealName(transponder) + ', just did an, ' + lapTime.toFixed(3), 'en-US');
+      speech.synthesis(getRealName(transponder) + ', just did a , ' + lapTime.toFixed(3), 'en-US');
     }
   }, [transponder, lapTime]);
 

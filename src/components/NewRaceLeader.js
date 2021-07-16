@@ -5,7 +5,7 @@ import getRealName from '../helpers/TransponderLookup';
 const NewRaceLeader = ({ newLeader }) => {
 
   useEffect(() => {
-    speech.synthesis(`We have a new race leader, it's ${getRealName(newLeader)}`, 'en-US');
+    speech.synthesis(`New race leader, it's ${getRealName(newLeader)}`, 'en-US');
   }, [newLeader]);
 
   return (

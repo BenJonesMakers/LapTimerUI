@@ -28,7 +28,7 @@ const RaceTimer = (props) => {
   return (
     <div>
       {seconds === 0
-        ? <h1>Starting</h1>
+        ? <h1>Go!</h1>
         : <h1> Countdown: {seconds < 10 ? `0${seconds}` : seconds}s</h1>
       }
     </div>

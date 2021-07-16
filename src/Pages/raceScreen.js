@@ -5,6 +5,7 @@ import StartRaceButton from '../components/StartRaceButton';
 import EndRaceButton from '../components/EndRaceButton';
 import RaceId from '../components/RaceId';
 import CountdownTimer from '../components/CountdownTimer';
+import speech from 'speech-js';
 
 const RaceScreen = (props) => {
 
@@ -25,6 +26,20 @@ const RaceScreen = (props) => {
 
     const endRace = () => {
         setRaceStatus('notstarted');
+        console.log('raceStatus', raceStatus);
+    }
+
+    const endRaceByTimer = () => {
+        setRaceStatus('finishing');
+        setTimeout(() => {
+            speech.synthesis('Race complete', 'en-US');
+            console.log(raceDetails);
+            speech.synthesis('The winner with laps was ', 'en-US');
+            setRaceStatus('complete');
+            fetch('http://localhost:3000/liveRace/endrace/', {
+                method: 'post'
+            })
+        }, 10000);
         console.log('raceStatus', raceStatus);
     }
 
@@ -68,7 +83,7 @@ const RaceScreen = (props) => {
     }
 
     useEffect(() => {
-        if (raceStatus === 'running') {
+        if (raceStatus === 'running' || raceStatus === 'finishing') {
 
             const intervalId = setInterval(() => {
                 generateFakeLap();
@@ -81,8 +96,19 @@ const RaceScreen = (props) => {
 
     return (
         <div style={{ width: "100%" }} >
-            {raceStatus === 'running' && <RaceTimer initialMinute={'10'} raceStatus={raceStatus} />}
-            {raceStatus === 'countdown' && <CountdownTimer countdownSeconds={'10'} raceStatus={raceStatus} triggerRaceStart={startRaceAfterCountdown} />}
+            {raceStatus === 'running' && <RaceTimer
+                initialMinute={'1'}
+                raceStatus={raceStatus}
+                triggerRaceEnd={endRaceByTimer}
+            />}
+            {raceStatus === 'countdown' && <CountdownTimer
+                countdownSeconds={'5'}
+                raceStatus={raceStatus}
+                triggerRaceStart={startRaceAfterCountdown}
+            />}
+            {raceStatus === 'finishing' && <h1>Complete your final lap</h1>}
+            {raceStatus === 'complete' && <h1>Race Complete</h1>}
+            {raceStatus === 'notstarted' && <h1>Waiting to start</h1>}
             <RaceId raceId={raceID} />
             <RaceDetailsPanel filteredAndSortedLaps={raceDetails.raceData} fastestLap={fastestLap} />
             <StartRaceButton raceInProgress={startRace} />
