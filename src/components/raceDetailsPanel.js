@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import NewRaceLeader from './NewRaceLeader';
 import RaceEntryDetails from './raceEntryDetails'
 import { Container, Row, Col } from 'react-bootstrap';
@@ -9,28 +9,45 @@ const RaceDetailsPanel = (props) => {
 
     const [raceLeaderChanged, setRaceLeaderChanged] = useState(false);
     const [raceLeader, setRaceLeader] = useState('');
+    let sortedRacers = [];
 
-    console.log('prop', props.filteredAndSortedLaps);
 
-    // useEffect(() => {
-    //     if (props.filteredAndSortedLaps) {
-    //         const possibleNewRaceLeader = props.filteredAndSortedLaps[0].transponderId;
+    useEffect(() => {
+        if (sortedRacers.length) {
+            const possibleNewRaceLeader = sortedRacers[0].transponderId;
 
-    //         if (raceLeader !== possibleNewRaceLeader) {
-    //             setRaceLeaderChanged(true);
-    //             setRaceLeader(possibleNewRaceLeader);
-
-    //         } else {
-    //             setRaceLeaderChanged(false);
-    //         }
-    //     }
-    // }, [props.filteredAndSortedLaps, raceLeader]);
+            if (raceLeader !== possibleNewRaceLeader) {
+                setRaceLeaderChanged(true);
+                setRaceLeader(possibleNewRaceLeader);
+                console.log('Race Leader now: ', possibleNewRaceLeader);
+            } else {
+                setRaceLeaderChanged(false);
+            }
+        }
+    }, [sortedRacers, raceLeader]);
 
     if (props.filteredAndSortedLaps === undefined) {
         return <p>No race data</p>
+    } else {
+        // create a new array of objects then create a new sorted array of objects
+        const unsortedRacers = [];
+        Object.keys(props.filteredAndSortedLaps).forEach((transponder) => {
+            unsortedRacers.push(props.filteredAndSortedLaps[transponder]);
+        });
+
+        if (unsortedRacers.length) {
+            sortedRacers = unsortedRacers
+                .sort((a, b) => {
+                    return b.totalTime - a.totalTime;
+                });
+        }
     }
-    const racers = Object.keys(props.filteredAndSortedLaps).map((transponder, index) => {
-        let laps = props.filteredAndSortedLaps[transponder].laps;
+    if (sortedRacers.length < 1) {
+        return <p>No race data</p>
+    }
+
+    const racers = sortedRacers.map((transponder, index) => {
+        let laps = transponder.laps;
         let lapNumber = 0;
         let lastLap = 0;
         if (laps.length > 1) {
@@ -39,13 +56,13 @@ const RaceDetailsPanel = (props) => {
         }
         return (
             <RaceEntryDetails
-                key={props.filteredAndSortedLaps[transponder].transponderId}
-                transponderId={props.filteredAndSortedLaps[transponder].transponderId}
+                key={transponder.transponderId}
+                transponderId={transponder.transponderId}
                 currentLap={lapNumber}
                 lastLapTime={lastLap}
-                totalLapTime={props.filteredAndSortedLaps[transponder].totalTime}
+                totalLapTime={transponder.totalTime}
                 position={index}
-                gap={getGap(index, props.filteredAndSortedLaps[transponder].totalTime, props.filteredAndSortedLaps)}
+                gap={getGap(index, transponder.totalTime, sortedRacers)}
             />
         );
     }
@@ -66,6 +83,5 @@ const RaceDetailsPanel = (props) => {
         </Container >
     )
 }
-
 
 export default RaceDetailsPanel;
