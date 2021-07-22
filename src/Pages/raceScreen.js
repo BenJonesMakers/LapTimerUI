@@ -33,7 +33,7 @@ const RaceScreen = (props) => {
             console.log(raceDetails);
             speech.synthesis('The winner with laps was ', 'en-US');
             setRaceStatus('complete');
-            fetch('http://localhost:3000/liveRace/endrace/', {
+            fetch('http://localhost:3000/liverace/endrace/', {
                 method: 'post'
             })
         }, 10000);
@@ -49,9 +49,9 @@ const RaceScreen = (props) => {
         }
     }
 
-    const getFakeAPIRaceData = () => {
+    const getRaceData = () => {
 
-        return fetch('http://localhost:3000/liverace/testrace', {
+        return fetch('http://localhost:3000/liverace/racedata', {
             method: 'get'
         })
             .then(function (response) {
@@ -83,7 +83,7 @@ const RaceScreen = (props) => {
 
             const intervalId = setInterval(() => {
                 generateFakeLap();
-                getFakeAPIRaceData();
+                getRaceData();
             }, 1000);
             return () => clearInterval(intervalId);
         }
