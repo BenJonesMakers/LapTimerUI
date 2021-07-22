@@ -10,6 +10,7 @@ const RaceDetailsPanel = (props) => {
     const [raceLeaderChanged, setRaceLeaderChanged] = useState(false);
     const [raceLeader, setRaceLeader] = useState('');
     let sortedRacers = [];
+    const { unsortedRaceData } = props;
 
 
     useEffect(() => {
@@ -26,22 +27,20 @@ const RaceDetailsPanel = (props) => {
         }
     }, [sortedRacers, raceLeader]);
 
-    if (props.filteredAndSortedLaps === undefined) {
+    if (unsortedRaceData === undefined) {
         return <p>No race data</p>
     } else {
-        // create a new array of objects then create a new sorted array of objects
-        const unsortedRacers = [];
-        Object.keys(props.filteredAndSortedLaps).forEach((transponder) => {
-            unsortedRacers.push(props.filteredAndSortedLaps[transponder]);
-        });
 
-        if (unsortedRacers.length) {
-            sortedRacers = unsortedRacers
+        if (unsortedRaceData.length) {
+            sortedRacers = unsortedRaceData
                 .sort((a, b) => {
                     return b.totalTime - a.totalTime;
                 });
         }
     }
+
+    //rendering
+
     if (sortedRacers.length < 1) {
         return <p>No race data</p>
     }

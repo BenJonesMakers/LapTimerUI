@@ -110,7 +110,7 @@ const RaceScreen = (props) => {
             {raceStatus === 'complete' && <h1>Race Complete</h1>}
             {raceStatus === 'notstarted' && <h1>Waiting to start</h1>}
             <RaceId raceId={raceID} />
-            <RaceDetailsPanel filteredAndSortedLaps={raceDetails.raceData} fastestLap={fastestLap} />
+            <RaceDetailsPanel unsortedRaceData={raceDetails.raceData} fastestLap={fastestLap} />
             <StartRaceButton raceInProgress={startRace} />
             <EndRaceButton raceInProgress={endRace} />
             <button onClick={handleOnClick}>toggle fake running</button>
