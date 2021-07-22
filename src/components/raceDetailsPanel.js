@@ -10,8 +10,8 @@ const RaceDetailsPanel = (props) => {
     const [raceLeaderChanged, setRaceLeaderChanged] = useState(false);
     const [raceLeader, setRaceLeader] = useState('');
     const { unsortedRaceData } = props;
-    const sortedRaceData = useMemo(() => {
-        if (unsortedRaceData) {
+    let sortedRaceData = useMemo(() => {
+        if (unsortedRaceData && unsortedRaceData.length) {
             return unsortedRaceData
                 .sort((a, b) => {
                     return b.totalTime - a.totalTime;
@@ -20,7 +20,7 @@ const RaceDetailsPanel = (props) => {
     }, [unsortedRaceData]);
 
     useEffect(() => {
-        if (sortedRaceData) {
+        if (sortedRaceData && sortedRaceData.length > 0) {
             const possibleNewRaceLeader = sortedRaceData[0].transponderId;
 
             if (raceLeader !== possibleNewRaceLeader) {
