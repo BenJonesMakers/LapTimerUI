@@ -82,7 +82,8 @@ const RaceScreen = (props) => {
         if (raceStatus === 'running' || raceStatus === 'finishing') {
 
             const intervalId = setInterval(() => {
-                generateFakeLap();
+                // toggle thos to use fake data
+                // generateFakeLap();
                 getRaceData();
             }, 1000);
             return () => clearInterval(intervalId);
