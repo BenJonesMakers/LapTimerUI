@@ -9,13 +9,19 @@ const RaceDetailsPanel = (props) => {
 
     const [raceLeaderChanged, setRaceLeaderChanged] = useState(false);
     const [raceLeader, setRaceLeader] = useState('');
-    let sortedRacers = [];
     const { unsortedRaceData } = props;
-
+    const sortedRaceData = useMemo(() => {
+        if (unsortedRaceData) {
+            return unsortedRaceData
+                .sort((a, b) => {
+                    return b.totalTime - a.totalTime;
+                });
+        }
+    }, [unsortedRaceData]);
 
     useEffect(() => {
-        if (sortedRacers.length) {
-            const possibleNewRaceLeader = sortedRacers[0].transponderId;
+        if (sortedRaceData) {
+            const possibleNewRaceLeader = sortedRaceData[0].transponderId;
 
             if (raceLeader !== possibleNewRaceLeader) {
                 setRaceLeaderChanged(true);
@@ -25,27 +31,15 @@ const RaceDetailsPanel = (props) => {
                 setRaceLeaderChanged(false);
             }
         }
-    }, [sortedRacers, raceLeader]);
-
-    if (unsortedRaceData === undefined) {
-        return <p>No race data</p>
-    } else {
-
-        if (unsortedRaceData.length) {
-            sortedRacers = unsortedRaceData
-                .sort((a, b) => {
-                    return b.totalTime - a.totalTime;
-                });
-        }
-    }
+    }, [sortedRaceData, raceLeader]);
 
     //rendering
 
-    if (sortedRacers.length < 1) {
+    if (!sortedRaceData) {
         return <p>No race data</p>
     }
 
-    const racers = sortedRacers.map((transponder, index) => {
+    const racers = sortedRaceData.map((transponder, index) => {
         let laps = transponder.laps;
         let lapNumber = 0;
         let lastLap = 0;
@@ -61,7 +55,7 @@ const RaceDetailsPanel = (props) => {
                 lastLapTime={lastLap}
                 totalLapTime={transponder.totalTime}
                 position={index}
-                gap={getGap(index, transponder.totalTime, sortedRacers)}
+                gap={getGap(index, transponder.totalTime, sortedRaceData)}
             />
         );
     }

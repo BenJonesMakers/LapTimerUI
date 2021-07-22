@@ -16,17 +16,14 @@ const RaceScreen = (props) => {
 
     const startRace = () => {
         setRaceStatus('countdown');
-        console.log('raceStatus', raceStatus);
     }
 
     const startRaceAfterCountdown = () => {
         setRaceStatus('running');
-        console.log('raceStatus', raceStatus);
     }
 
     const endRace = () => {
         setRaceStatus('notstarted');
-        console.log('raceStatus', raceStatus);
     }
 
     const endRaceByTimer = () => {
@@ -40,7 +37,6 @@ const RaceScreen = (props) => {
                 method: 'post'
             })
         }, 10000);
-        console.log('raceStatus', raceStatus);
     }
 
     const handleOnClick = (e) => {
