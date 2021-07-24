@@ -39,15 +39,15 @@ const RaceScreen = (props) => {
         }, 10000);
     }
 
-    const handleOnClick = (e) => {
-        e.preventDefault();
-        props.toggleRaceStatus();
-        if (raceStatus === 'notstarted' || raceStatus === 'countdown') {
-            setRaceStatus('running');
-        } else {
-            setRaceStatus('notstarted');
-        }
-    }
+    // const handleOnClick = (e) => {
+    //     e.preventDefault();
+    //     props.toggleRaceStatus();
+    //     if (raceStatus === 'notstarted' || raceStatus === 'countdown') {
+    //         setRaceStatus('running');
+    //     } else {
+    //         setRaceStatus('notstarted');
+    //     }
+    // }
 
     const getRaceData = () => {
 
@@ -80,15 +80,13 @@ const RaceScreen = (props) => {
 
     useEffect(() => {
         if (raceStatus === 'running' || raceStatus === 'finishing') {
-
             const intervalId = setInterval(() => {
-                // toggle thos to use fake data
-                // generateFakeLap();
+                generateFakeLap();
                 getRaceData();
             }, 1000);
             return () => clearInterval(intervalId);
-        }
 
+        }
     });
 
     return (
@@ -110,7 +108,7 @@ const RaceScreen = (props) => {
             <RaceDetailsPanel unsortedRaceData={raceDetails.raceData} fastestLap={fastestLap} />
             <StartRaceButton raceInProgress={startRace} />
             <EndRaceButton raceInProgress={endRace} />
-            <button onClick={handleOnClick}>toggle fake running</button>
+            {/* <button onClick={handleOnClick}>toggle fake running</button> */}
         </div>
     );
 }

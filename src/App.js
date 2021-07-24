@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
-import RaceScreen from './Pages/raceScreen';
+import Race from './Pages/Race';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavigationBar from './components/NavigationBar';
 import { Switch, Route } from "react-router-dom";
 import Events from './Pages/Events';
+import Drivers from './Pages/Drivers';
 
 function App() {
 
@@ -22,16 +23,16 @@ function App() {
       </header>
       <Switch>
         <Route exact path="/">
-          <RaceScreen toggleRaceStatus={toggleRaceStatus} />
+          <Race toggleRaceStatus={toggleRaceStatus} />
         </Route>
         <Route path="/live-race">
-          <RaceScreen toggleRaceStatus={toggleRaceStatus} />
+          <Race toggleRaceStatus={toggleRaceStatus} />
         </Route>
         <Route path="/events">
           <Events />
         </Route>
         <Route path="/drivers">
-          <Events />
+          <Drivers />
         </Route>
         <Route path="/settings">
           <Events />
