@@ -14,7 +14,8 @@ const RaceDetailsPanel = (props) => {
         if (unsortedRaceData && unsortedRaceData.length) {
             return unsortedRaceData
                 .sort((a, b) => {
-                    return b.totalTime - a.totalTime;
+                    // TODO: check if laps are the same and if so then sort by time?
+                    return b.lapNumber - a.lapNumber;
                 });
         }
     }, [unsortedRaceData]);
