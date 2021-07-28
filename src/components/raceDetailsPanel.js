@@ -59,6 +59,7 @@ const RaceDetailsPanel = (props) => {
                 currentLap={lapNumber}
                 lastLapTime={lastLap}
                 totalLapTime={transponder.totalTime}
+                averageLapTime={transponder.totalTime / lapNumber}
                 position={index}
                 gap={getGap(index, transponder.totalTime, sortedRaceData)}
             />
@@ -73,6 +74,7 @@ const RaceDetailsPanel = (props) => {
                 <Col>Lap</Col>
                 <Col>Last</Col>
                 <Col>Total</Col>
+                <Col>Average</Col>
                 <Col>Gap</Col>
             </Row>
             {racers}

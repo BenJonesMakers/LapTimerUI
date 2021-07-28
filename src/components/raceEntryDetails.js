@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import getRealName from '../helpers/TransponderLookup';
 
-const RaceEntryDetails = ({ transponderId, currentLap, lastLapTime, totalLapTime, position, gap }) => {
+const RaceEntryDetails = ({ transponderId, currentLap, lastLapTime, totalLapTime, averageLapTime, position, gap }) => {
 
     let formattedTotalLapTime = useRef(0.000);
 
@@ -24,12 +24,13 @@ const RaceEntryDetails = ({ transponderId, currentLap, lastLapTime, totalLapTime
 
     return (
         <>
-            { transponderId && <Row key={transponderId} >
+            {transponderId && <Row key={transponderId} >
                 <Col > P{position + 1}</Col>
                 <Col>{getRealName(transponderId)}</Col>
                 <Col>{currentLap}</Col>
                 <Col style={{ textAlign: "right" }} >{lastLapTime.toFixed(3)}</Col>
                 <Col style={{ textAlign: "right" }} >{formattedTotalLapTime.current}</Col>
+                <Col style={{ textAlign: "right" }} >{averageLapTime ? averageLapTime.toFixed(3) : '---'}</Col>
                 <Col>{gap} </Col>
             </Row>
             }
