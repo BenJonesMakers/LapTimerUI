@@ -72,9 +72,9 @@ const RaceDetailsPanel = (props) => {
                 <Col>Position</Col>
                 <Col>Name</Col>
                 <Col>Lap</Col>
-                <Col>Last</Col>
-                <Col>Total</Col>
-                <Col>Average</Col>
+                <Col style={{ textAlign: "right" }}>Last</Col>
+                <Col style={{ textAlign: "right" }}>Total</Col>
+                <Col style={{ textAlign: "right" }}>Average</Col>
                 <Col>Gap</Col>
             </Row>
             {racers}
