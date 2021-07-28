@@ -56,6 +56,7 @@ const RaceDetailsPanel = (props) => {
             <RaceEntryDetails
                 key={transponder.transponderId}
                 transponderId={transponder.transponderId}
+                racerName={transponder.racerName}
                 currentLap={lapNumber}
                 lastLapTime={lastLap}
                 totalLapTime={transponder.totalTime}
