@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import AddDriver from '../components/AddDriver';
 import ListDrivers from '../components/ListDrivers';
 
 const Drivers = (props) => {
@@ -34,6 +35,7 @@ const Drivers = (props) => {
       {
         drivers ? <ListDrivers allDrivers={drivers} /> : <h1> Loading </h1>
       }
+      <AddDriver />
     </>
   );
 }
