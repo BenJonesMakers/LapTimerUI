@@ -7,9 +7,12 @@ import RaceId from '../components/RaceId';
 import CountdownTimer from '../components/CountdownTimer';
 import speech from 'speech-js';
 
-const RaceScreen = (props) => {
+const RaceScreen = () => {
 
-    const [raceDetails, setRaceDetails] = useState({});
+    const [raceDetails, setRaceDetails] = useState({
+        raceData: []
+    });
+    const { raceData: sortedRaceData } = raceDetails;
     const [raceStatus, setRaceStatus] = useState('notstarted');
     const [fastestLap, setFastestLap] = useState({});
     const [raceID, setRaceID] = useState('000');
@@ -28,26 +31,23 @@ const RaceScreen = (props) => {
 
     const endRaceByTimer = () => {
         setRaceStatus('finishing');
+        // get the current race leader and their transponder.
+        const winingTransponder = sortedRaceData[0].transponderId;
+        const winingRealName = sortedRaceData[0].realName;
+        const winingNumberOfLaps = sortedRaceData[0].totalLaps;
+        console.log(`The winner (${winingTransponder}) is ${winingRealName} with ${winingNumberOfLaps} laps`);
+        speech.synthesis(`The winner (${winingTransponder}) is ${winingRealName} with ${winingNumberOfLaps} laps`, 'en-US');
+        console.log(raceDetails);
+        fetch('http://localhost:3000/liverace/endrace/', {
+            method: 'post'
+        })
+
+        // real race finish being calculated in the back-end - this is just a UI clean up
         setTimeout(() => {
             speech.synthesis('Race complete', 'en-US');
-            console.log(raceDetails);
-            speech.synthesis('The winner with laps was ', 'en-US');
             setRaceStatus('complete');
-            fetch('http://localhost:3000/liverace/endrace/', {
-                method: 'post'
-            })
         }, 10000);
     }
-
-    // const handleOnClick = (e) => {
-    //     e.preventDefault();
-    //     props.toggleRaceStatus();
-    //     if (raceStatus === 'notstarted' || raceStatus === 'countdown') {
-    //         setRaceStatus('running');
-    //     } else {
-    //         setRaceStatus('notstarted');
-    //     }
-    // }
 
     const getRaceData = () => {
 
@@ -105,10 +105,9 @@ const RaceScreen = (props) => {
             {raceStatus === 'complete' && <h1>Race Complete</h1>}
             {raceStatus === 'notstarted' && <h1>Waiting to start</h1>}
             <RaceId raceId={raceID} />
-            <RaceDetailsPanel unsortedRaceData={raceDetails.raceData} fastestLap={fastestLap} />
+            <RaceDetailsPanel sortedRaceData={sortedRaceData} fastestLap={fastestLap} />
             <StartRaceButton raceInProgress={startRace} />
             <EndRaceButton raceInProgress={endRace} />
-            {/* <button onClick={handleOnClick}>toggle fake running</button> */}
         </div>
     );
 }
