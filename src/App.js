@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
 import Race from './Pages/Race';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,24 +9,17 @@ import Drivers from './Pages/Drivers';
 
 function App() {
 
-  const [raceStatus, setRaceStatus] = useState(false);
-
-  const toggleRaceStatus = () => {
-    setRaceStatus(prevRaceStatus => !prevRaceStatus);
-    console.log('RaceStatus: ', raceStatus);
-  }
-
   return (
     <div className="App">
       <header className="App-header">
-        <NavigationBar raceStatus={raceStatus} />
+        <NavigationBar />
       </header>
       <Switch>
         <Route exact path="/">
-          <Race toggleRaceStatus={toggleRaceStatus} />
+          <Race />
         </Route>
         <Route path="/live-race">
-          <Race toggleRaceStatus={toggleRaceStatus} />
+          <Race />
         </Route>
         <Route path="/events">
           <Events />
