@@ -36,15 +36,14 @@ const ListArchiveRaces = (props) => {
     var dateStr = JSON.parse(race.race_start_time);
     var date = new Date(dateStr);
     var formattedDate = date.toString().slice(4, 21);
-    return <><li key={race.race_id}>
+    return <div key={race.race_id}><li key={race.race_id}>
       <Button
         variant="primary"
         onClick={() => handleShow(race.race_id, formattedDate)}
         key={race.race_id}>{formattedDate}
       </Button>
     </li>
-
-    </>
+    </div>
   }
   );
 
@@ -57,7 +56,7 @@ const ListArchiveRaces = (props) => {
         </Modal.Header>
         <Modal.Body>
           <p>Race Id: {modalRaceId}</p>
-          {modalRaceInfo && modalRaceInfo.map((racePosition) => (<li>{racePosition}</li>)
+          {modalRaceInfo && modalRaceInfo.map((racePosition, index) => (<li key={index}>{racePosition}</li>)
 
           )}
         </Modal.Body>
