@@ -76,7 +76,7 @@ const RaceDetailsPanel = (props) => {
                 <Col style={{ textAlign: "right" }}>Last</Col>
                 <Col style={{ textAlign: "right" }}>Total</Col>
                 <Col style={{ textAlign: "right" }}>Average</Col>
-                <Col>Gap</Col>
+                <Col>Interval</Col>
             </Row>
             {racers}
             <FastestLap fastestLap={props.fastestLap} />
