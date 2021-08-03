@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import RaceDetailsPanel from '../components/raceDetailsPanel';
 import RaceTimer from '../components/RaceTimer';
-import StartRaceButton from '../components/StartRaceButton';
+import StartRaceButton from '../components/startRaceButton';
 import EndRaceButton from '../components/EndRaceButton';
 import RaceId from '../components/RaceId';
 import CountdownTimer from '../components/CountdownTimer';
