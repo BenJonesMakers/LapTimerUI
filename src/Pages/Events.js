@@ -8,7 +8,7 @@ const Events = () => {
   async function fetchArchiveRaces() {
 
     try {
-      const response = await fetch('http://localhost:3000/events', {
+      const response = await fetch('http://localhost:3001/events', {
         method: 'get'
       });
       if (response.status !== 200) {

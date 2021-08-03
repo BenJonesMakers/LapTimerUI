@@ -3,7 +3,7 @@ import React from 'react';
 function EndRaceButton(props) {
 
     function handleOnClick() {
-        fetch('http://localhost:3000/liveRace/endrace/', {
+        fetch('http://localhost:3001/liveRace/endrace/', {
             method: 'post'
         })
             .then(function (response) {

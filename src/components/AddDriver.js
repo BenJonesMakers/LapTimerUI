@@ -17,7 +17,7 @@ const AddDriver = () => {
   };
 
   const postNewDriver = (transponderValue, realNameValue) => {
-    fetch('http://localhost:3000/drivers/new', {
+    fetch('http://localhost:3001/drivers/new', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

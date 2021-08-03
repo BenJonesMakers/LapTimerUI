@@ -9,7 +9,7 @@ const Drivers = (props) => {
   async function fetchDrivers() {
 
     try {
-      const response = await fetch('http://localhost:3000/drivers', {
+      const response = await fetch('http://localhost:3001/drivers', {
         method: 'get'
       });
       if (response.status !== 200) {

@@ -38,7 +38,7 @@ const RaceScreen = () => {
         console.log(`The winner (${winingTransponder}) is ${winingRealName} with ${winingNumberOfLaps} laps`);
         speech.synthesis(`The winner (${winingTransponder}) is ${winingRealName} with ${winingNumberOfLaps} laps`, 'en-US');
         console.log(raceDetails);
-        fetch('http://localhost:3000/liverace/endrace/', {
+        fetch('http://localhost:3001/liverace/endrace/', {
             method: 'post'
         })
 
@@ -51,7 +51,7 @@ const RaceScreen = () => {
 
     const getRaceData = () => {
 
-        return fetch('http://localhost:3000/liverace/racedata', {
+        return fetch('http://localhost:3001/liverace/racedata', {
             method: 'get'
         })
             .then(function (response) {
@@ -73,7 +73,7 @@ const RaceScreen = () => {
     }
 
     const generateFakeLap = () => {
-        return fetch('http://localhost:3000/liverace/generatetestlap', {
+        return fetch('http://localhost:3001/liverace/generatetestlap', {
             method: 'post'
         })
     }
