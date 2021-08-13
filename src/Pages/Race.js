@@ -5,7 +5,6 @@ import StartRaceButton from '../components/startRaceButton';
 import EndRaceButton from '../components/EndRaceButton';
 import RaceId from '../components/RaceId';
 import CountdownTimer from '../components/CountdownTimer';
-import speech from 'speech-js';
 
 const RaceScreen = () => {
 
@@ -32,23 +31,10 @@ const RaceScreen = () => {
 
     const endRaceByTimer = () => {
         setRaceStatus('finishing');
-        // get the current race leader and their transponder.
-        if (sortedRaceData && sortedRaceData.length > 0) {
-            const winingTransponder = sortedRaceData[0].transponderId;
-            const winingRealName = sortedRaceData[0].realName;
-            const winingNumberOfLaps = sortedRaceData[0].totalLaps;
-            console.log(`The winner (${winingTransponder}) is ${winingRealName} with ${winingNumberOfLaps} laps`);
-            speech.synthesis(`The winner (${winingTransponder}) is ${winingRealName} with ${winingNumberOfLaps} laps`, 'en-US');
-        }
+
         fetch('http://localhost:3001/liverace/endrace/', {
             method: 'post'
         })
-
-        // real race finish being calculated in the back-end - this is just a UI clean up
-        setTimeout(() => {
-            speech.synthesis('Race complete', 'en-US');
-            setRaceStatus('complete');
-        }, 10000);
     }
 
     const getRaceData = () => {
