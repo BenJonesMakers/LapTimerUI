@@ -32,12 +32,14 @@ const RaceScreen = () => {
     const endRaceByTimer = () => {
         setRaceStatus('finishing');
         // get the current race leader and their transponder.
-        const winingTransponder = sortedRaceData[0].transponderId;
-        const winingRealName = sortedRaceData[0].realName;
-        const winingNumberOfLaps = sortedRaceData[0].totalLaps;
-        console.log(`The winner (${winingTransponder}) is ${winingRealName} with ${winingNumberOfLaps} laps`);
-        speech.synthesis(`The winner (${winingTransponder}) is ${winingRealName} with ${winingNumberOfLaps} laps`, 'en-US');
-        console.log(raceDetails);
+        if (sortedRaceData && sortedRaceData.length > 0) {
+            const winingTransponder = sortedRaceData[0].transponderId;
+            const winingRealName = sortedRaceData[0].realName;
+            const winingNumberOfLaps = sortedRaceData[0].totalLaps;
+            console.log(`The winner (${winingTransponder}) is ${winingRealName} with ${winingNumberOfLaps} laps`);
+            speech.synthesis(`The winner (${winingTransponder}) is ${winingRealName} with ${winingNumberOfLaps} laps`, 'en-US');
+            console.log(raceDetails);
+        }
         fetch('http://localhost:3001/liverace/endrace/', {
             method: 'post'
         })
@@ -81,7 +83,6 @@ const RaceScreen = () => {
     useEffect(() => {
         if (raceStatus === 'running' || raceStatus === 'finishing') {
             const intervalId = setInterval(() => {
-                console.log('ENV', process.env.REACT_APP_ENV);
                 if (process.env.REACT_APP_ENV === 'development') generateFakeLap();
                 getRaceData();
             }, 1000);
