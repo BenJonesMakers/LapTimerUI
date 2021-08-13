@@ -14,6 +14,7 @@ const RaceScreen = () => {
     });
     const { raceData: sortedRaceData } = raceDetails;
     const [raceStatus, setRaceStatus] = useState('notstarted');
+    const [raceStatusBackend, setRaceStatusBackend] = useState('notstarted');
     const [fastestLap, setFastestLap] = useState({});
     const [raceID, setRaceID] = useState('000');
 
@@ -63,9 +64,12 @@ const RaceScreen = () => {
                     return;
                 }
                 response.json().then(function (data) {
-                    setRaceDetails(data);
-                    setFastestLap(data.fastestLap);
-                    setRaceID(data.raceID);
+                    setRaceStatusBackend(data.raceStatusBackend);
+                    if (raceStatusBackend !== 'complete') {
+                        setRaceDetails(data);
+                        setFastestLap(data.fastestLap);
+                        setRaceID(data.raceID);
+                    }
                 })
 
             })
@@ -91,6 +95,10 @@ const RaceScreen = () => {
         }
     });
 
+    useEffect(() => {
+        if (raceStatusBackend === 'complete') setRaceStatus('complete')
+    }, [raceStatusBackend]);
+
     return (
         <div style={{ width: "100%" }} >
             {raceStatus === 'running' && <RaceTimer
@@ -104,7 +112,7 @@ const RaceScreen = () => {
                 triggerRaceStart={startRaceAfterCountdown}
             />}
             {raceStatus === 'finishing' && <h1>Complete your final lap</h1>}
-            {raceStatus === 'complete' && <h1>Race Complete</h1>}
+            {raceStatusBackend === 'complete' && <h1>Race Complete</h1>}
             {raceStatus === 'notstarted' && <h1>Waiting to start</h1>}
             <RaceId raceId={raceID} />
             <RaceDetailsPanel sortedRaceData={sortedRaceData} fastestLap={fastestLap} />
