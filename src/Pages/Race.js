@@ -39,7 +39,6 @@ const RaceScreen = () => {
             const winingNumberOfLaps = sortedRaceData[0].totalLaps;
             console.log(`The winner (${winingTransponder}) is ${winingRealName} with ${winingNumberOfLaps} laps`);
             speech.synthesis(`The winner (${winingTransponder}) is ${winingRealName} with ${winingNumberOfLaps} laps`, 'en-US');
-            console.log(raceDetails);
         }
         fetch('http://localhost:3001/liverace/endrace/', {
             method: 'post'
