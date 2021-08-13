@@ -81,7 +81,8 @@ const RaceScreen = () => {
     useEffect(() => {
         if (raceStatus === 'running' || raceStatus === 'finishing') {
             const intervalId = setInterval(() => {
-                generateFakeLap();
+                console.log('ENV', process.env.REACT_APP_ENV);
+                if (process.env.REACT_APP_ENV === 'development') generateFakeLap();
                 getRaceData();
             }, 1000);
             return () => clearInterval(intervalId);

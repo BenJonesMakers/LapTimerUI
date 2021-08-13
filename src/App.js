@@ -6,7 +6,6 @@ import NavigationBar from './components/NavigationBar';
 import { Switch, Route } from "react-router-dom";
 import Events from './Pages/Events';
 import Drivers from './Pages/Drivers';
-require('dotenv').config();
 
 function App() {
 
