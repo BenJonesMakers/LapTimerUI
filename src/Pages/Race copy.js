@@ -11,36 +11,18 @@ const RaceScreen = () => {
     const [raceDetails, setRaceDetails] = useState({
         raceData: []
     });
-    const { raceData: unsortedRaceData } = raceDetails;
+    const { raceData: sortedRaceData } = raceDetails;
     const [raceStatus, setRaceStatus] = useState('notstarted');
     const [raceStatusBackend, setRaceStatusBackend] = useState('notstarted');
     const [fastestLap, setFastestLap] = useState({});
     const [raceID, setRaceID] = useState('000');
 
-    const startRace = (raceId) => {
+    const startRace = () => {
         setRaceStatus('countdown');
-        setRaceID(raceId);
     }
 
     const startRaceAfterCountdown = () => {
-
         setRaceStatus('running');
-
-        fetch(`https://localhost:5001/races/${raceID}`, {
-        method: 'put',
-        body: JSON.stringify({ raceStatusBackEnd: 'running'})
-    })
-        .then(function (response) {
-            if (response.status !== 204) {
-                console.log('Looks like there was a problem. Status Code: ' +
-                    response.status);
-                return;
-            }
-
-        })
-        .catch(function (err) {
-            console.log('Fetch Error :-S', err);
-        })
     }
 
     const endRace = () => {
@@ -50,32 +32,15 @@ const RaceScreen = () => {
     const endRaceByTimer = () => {
         setRaceStatus('finishing');
 
-        fetch(`https://localhost:5001/races/${raceID}`, {
-            method: 'put',
-            body: JSON.stringify({ raceStatusBackEnd: 'finishing'})
+        fetch('http://localhost:3001/liverace/endrace/', {
+            method: 'post'
         })
-            .then(function (response) {
-                if (response.status !== 204) {
-                    console.log('Looks like there was a problem. Status Code: ' +
-                        response.status);
-                    return;
-                }
-
-            })
-            .catch(function (err) {
-                console.log('Fetch Error :-S', err);
-            })
     }
 
     const getRaceData = () => {
 
-        return fetch(`https://localhost:5001/races/${raceID}`, {
-            method: 'get',
-            headers: {
-                'Access-Control-Allow-Origin': 'http://localhost:3000',
-                'Access-Control-Allow-Credentials': 'true',
-                'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, POST, DELETE, OPTIONS',
-            },
+        return fetch('http://localhost:3001/liverace/racedata', {
+            method: 'get'
         })
             .then(function (response) {
                 if (response.status !== 200) {
@@ -87,9 +52,8 @@ const RaceScreen = () => {
                     setRaceStatusBackend(data.raceStatusBackend);
                     if (raceStatusBackend !== 'complete') {
                         setRaceDetails(data);
-                        console.log('at fetch', data);
-                        //setFastestLap(data.fastestLap);
-                        // setRaceID(data.raceID);
+                        setFastestLap(data.fastestLap);
+                        setRaceID(data.raceID);
                     }
                 })
 
@@ -99,10 +63,16 @@ const RaceScreen = () => {
             })
     }
 
+    const generateFakeLap = () => {
+        return fetch('http://localhost:3001/liverace/generatetestlap', {
+            method: 'post'
+        })
+    }
+
     useEffect(() => {
         if (raceStatus === 'running' || raceStatus === 'finishing') {
             const intervalId = setInterval(() => {
-                // if (process.env.REACT_APP_ENV === 'development') generateFakeLap();
+                if (process.env.REACT_APP_ENV === 'development') generateFakeLap();
                 getRaceData();
             }, 1000);
             return () => clearInterval(intervalId);
@@ -130,9 +100,9 @@ const RaceScreen = () => {
             {raceStatusBackend === 'complete' && <h1>Race Complete</h1>}
             {raceStatus === 'notstarted' && <h1>Waiting to start</h1>}
             <RaceId raceId={raceID} />
-            <RaceDetailsPanel unsortedRaceData={unsortedRaceData} fastestLap={fastestLap} />
+            <RaceDetailsPanel sortedRaceData={sortedRaceData} fastestLap={fastestLap} />
             <StartRaceButton raceInProgress={startRace} />
-            <EndRaceButton raceInProgress={endRace} raceId={raceID} />
+            <EndRaceButton raceInProgress={endRace} />
         </div>
     );
 }

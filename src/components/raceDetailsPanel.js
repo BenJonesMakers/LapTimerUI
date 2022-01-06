@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import NewRaceLeader from './NewRaceLeader';
 import RaceEntryDetails from './raceEntryDetails'
 import { Container, Row, Col } from 'react-bootstrap';
@@ -9,20 +9,20 @@ const RaceDetailsPanel = (props) => {
 
     const [raceLeaderChanged, setRaceLeaderChanged] = useState(false);
     const [raceLeader, setRaceLeader] = useState('');
-    const { sortedRaceData } = props;
-    // let sortedRaceData = useMemo(() => {
-    //     if (unsortedRaceData && unsortedRaceData.length) {
-    //         return unsortedRaceData
-    //             .sort((a, b) => {
-    //                 // Sorts first by number of laps and then by shortest time
-    //                 var n = b.totalLaps - a.totalLaps;
-    //                 if (n !== 0) {
-    //                     return n;
-    //                 }
-    //                 return a.totalTime - b.totalTime;
-    //             });
-    //     }
-    // }, [unsortedRaceData]);
+    const { unsortedRaceData } = props;
+    let sortedRaceData = useMemo(() => {
+        if (unsortedRaceData && unsortedRaceData.length) {
+            return unsortedRaceData
+                .sort((a, b) => {
+                    // Sorts first by number of laps and then by shortest time
+                    var n = b.totalLaps - a.totalLaps;
+                    if (n !== 0) {
+                        return n;
+                    }
+                    return a.totalTime - b.totalTime;
+                });
+        }
+    }, [unsortedRaceData]);
 
     useEffect(() => {
         if (sortedRaceData && sortedRaceData.length > 0) {
@@ -46,11 +46,11 @@ const RaceDetailsPanel = (props) => {
 
     const racers = sortedRaceData.map((transponder, index) => {
         let laps = transponder.laps;
-        let lapNumber = 0;
+        let lapNumber = transponder.totalLaps;
         let lastLap = 0;
         if (laps.length > 1) {
-            lapNumber = laps[laps.length - 1].lapNo;
-            lastLap = laps[laps.length - 1].laptime;
+            //lapNumber = laps[laps.length - 1].lapNo;
+            lastLap = laps[laps.length - 1].timeSeconds;
         }
         return (
             <RaceEntryDetails

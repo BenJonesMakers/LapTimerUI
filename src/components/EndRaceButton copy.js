@@ -3,24 +3,27 @@ import React from 'react';
 function EndRaceButton(props) {
 
     function handleOnClick() {
-
-        fetch(`https://localhost:5001/races/${props.raceId}`, {
-            method: 'put',
-            body: JSON.stringify({ raceStatusBackEnd: 'complete'})
+        fetch('http://localhost:3001/liveRace/endrace/', {
+            method: 'post'
         })
             .then(function (response) {
-
-                if (response.status !== 204) {
+                if (response.status !== 200) {
                     console.log('Looks like there was a problem. Status Code: ' +
                         response.status);
                     return;
                 }
-                props.raceInProgress();
+
+                response.json().then(function (data) {
+                    console.log(data);
+                    props.raceInProgress();
                 })
+
+            })
             .catch(function (err) {
                 console.log('Fetch Error :-S', err);
             })
     }
+
 
     return (
         <div><button onClick={handleOnClick}>End Race</button></div>
